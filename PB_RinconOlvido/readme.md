@@ -1,4 +1,4 @@
-Proyecto con front-end catalogo.
+Proyecto con front-end catalogo + detalles de producto.
 
 Primero colocar en consola desde la carpeta de "remates-server":
 ```
