@@ -1,0 +1,91 @@
+.catalogo-container {
+    display: grid;
+    grid-template-columns: 300px 1fr; /* 300px para la barra lateral, el resto para el catálogo */
+    gap: 10px; /* Espacio entre la barra lateral y el catálogo */
+}
+
+.catalogo-sidebar {
+    background-color: transparent; /*Esto hace que no tope productos con barra lateral */
+    padding: 20px;
+}
+
+.catalogo {
+    margin: 80px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas de igual tamaño */
+    align-items: center;
+    justify-items: center; /* Centra los productos dentro de su columna */
+    row-gap: 40px;
+    margin-top: 60px; /* para que no lo tape el header */
+    margin-right: 90px;
+}
+
+.catalogo-card {
+    border: 1px solid #ccc;
+    padding: 16px;
+    display: flex;
+    width: 400px; /* por alguna razon si pongo 100% las tarjetas salen de distinto tamaño*/
+    /*max-width: 400px;*/
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 15px;
+}
+
+.catalogo-card:hover {
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    transform: scale(1.05);
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.catalogo-imagen-producto {
+    width: 200px;
+    height: auto;
+    margin-right: 16px;
+}
+
+.catalogo-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.catalogo-info p span {
+    font-weight: bold;
+}
+
+/* Desde aqui es estilo de filtros (parte de catalogo) */
+
+.barra-lateral {
+    width: 250px;
+    background-color: #f0f0f0;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    margin-top: 45px; /* para que no lo tape el header */
+}
+
+.filtro {
+    margin-bottom: 20px; /* Espaciado entre filtros */
+}
+
+.boton-aplicar {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.boton-aplicar:hover {
+    background-color: #0056b3;
+}
