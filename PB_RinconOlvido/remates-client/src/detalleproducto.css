@@ -128,3 +128,63 @@
     font-size: 24px;
     margin-right: 10px;
 }
+
+.boton-editar-eliminar {
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.boton-editar-eliminar:hover {
+    background-color: #b30404;
+}
+
+.popupEliminar {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 50px;
+    border: 1px solid #ccc;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+}
+
+.Eliminarbutton {
+    margin: 5px;
+    background-color: #ff2600;
+    color: white;
+    padding: 10px 50px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    border: none;
+}
+
+.Eliminarbutton:hover {
+    background-color: #b30404;
+}
+
+.Cancelarbutton-e {
+    margin: 5px;
+    background-color: #2388fc;
+    color: white;
+    padding: 10px 50px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    border: none;
+}
+
+.Cancelarbutton-e:hover {
+    background-color: #1f6fca;
+}
