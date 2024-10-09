@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './catalogo.css';
 import { Link } from 'react-router-dom';
+import AgregarProducto from './agregarProducto';
 
 const Catalogo = () => {
     const productos = [
@@ -9,6 +10,28 @@ const Catalogo = () => {
         { id: 3, nombre: 'Producto 3', precio: 50, fecha_termino: '2024-10-09', rareza: 'poco comun', imagen: 'https://via.placeholder.com/150' },
         { id: 4, nombre: 'Producto 4', precio: 500, fecha_termino: '2024-10-07', rareza: 'extravagante', imagen: 'https://via.placeholder.com/150' },
     ];
+
+    //Por aqui lo que tiene que ver con admin
+    const [isAdmin] = useState(true); // esto simula que el usuario es admin, se debe implementar esta logica en backend por seguridad
+    const [productoEliminar, setProductoEliminar] = useState(null);
+
+    const confirmarEliminacion = () => {
+        setProductosFiltrados(productosFiltrados.filter(p => p.id !== productoEliminar.id));
+        setProductoEliminar(null); // Cierra el popup
+    };
+
+    //Para mostrar popup de agregar producto
+    const [mostrarPopup, setMostrarPopup] = useState(false);
+
+    const abrirPopup = () => {
+        setMostrarPopup(true);
+    };
+
+    const cerrarPopup = () => {
+        setMostrarPopup(false);
+    };
+    
+    //Fin de cosas de admin
 
     const [filtroNombre, setFiltroNombre] = useState('');
 
@@ -89,6 +112,9 @@ const Catalogo = () => {
                         />
                         </div>
                         <button className="boton-aplicar" onClick={aplicarFiltro}>Aplicar Filtro</button>
+                        {isAdmin && (
+                            <button onClick={abrirPopup} className="boton-agregar">Agregar un producto</button>
+                        )}
                     </div>
                 </div>   
             
@@ -109,7 +135,22 @@ const Catalogo = () => {
                         </Link>
                     ))}
                 </div>
+            {/* Popup de agregar producto */}
+            {mostrarPopup && <AgregarProducto onClose={cerrarPopup} />}
             </div>
+            {/* Popup de eliminacion */}
+            {productoEliminar && (
+                <div className="popup-eliminar">
+                    <div className="popup-contenido">
+                        <h2>¿Seguro que quieres eliminar este producto?</h2>
+                        <p>{productoEliminar.nombre}</p>
+                        <div>
+                            <button onClick={() => setProductoEliminar(null)}>Cancelar</button>
+                            <button onClick={confirmarEliminacion}>Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
