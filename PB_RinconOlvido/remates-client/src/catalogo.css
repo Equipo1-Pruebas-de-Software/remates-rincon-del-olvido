@@ -29,6 +29,7 @@
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border-radius: 15px;
+    /* box-sizing: border-box */ /* Con esto de aqui las tarjetas se ven mas chiquitas, pero a mi parecer se ven raras*/
 }
 
 .catalogo-card:hover {
@@ -88,4 +89,166 @@
 
 .boton-aplicar:hover {
     background-color: #0056b3;
+}
+
+/* Desde aqui accesos de admin */
+
+.boton-agregar {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.boton-agregar:hover {
+    background-color: #1b682d;
+}
+
+/* Popup de agregar */
+
+.agregar-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.agregar-popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 800px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    position: relative;
+    overflow: hidden;
+}
+
+.agregar-popup-title {
+    background-color: #28a745;
+    padding: 15px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    border-radius: 10px 10px 0 0;
+    margin: -20px;
+    width: calc(100% + 40px);
+    transform: translateX(-20px);
+}
+
+.agregar-popup-form {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 0px;
+}
+
+.agregar-form-col {
+    flex: 1;
+    margin-right: 20px; /* Espacio entre columnas */
+    margin-bottom: 20px; /* Espacio entre los campos */
+}
+
+.agregar-form-col label {
+    margin-bottom: 10px;
+    display: block;
+}
+
+.imagenes-adicionales {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.agregar-imagenes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.agregar-imagen-adicional {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 3px;
+    border-radius: 5px;
+}
+
+
+.agregar-popup-buttons {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    gap: 10px;
+    width: 40%;
+}
+
+.agregar-boton-aplicar {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    height: 20%;
+    margin-top: 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.agregar-boton-aplicar:hover {
+    background-color: #1b682d;
+}
+
+.agregar-boton-cancelar {
+    background-color: #fd0000;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 50%;
+    height: 20%;
+    margin-top: 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.agregar-boton-cancelar:hover {
+    background-color: #b80000;
+}
+
+.agregar-boton-eliminar {
+    background-color: #fd0000;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    width: 20%;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.agregar-boton-eliminar:hover {
+    background-color: #b80000;
 }
