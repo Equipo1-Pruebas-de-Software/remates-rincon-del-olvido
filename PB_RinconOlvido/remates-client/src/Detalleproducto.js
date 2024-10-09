@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import './detalleproducto.css';
+import EditarProducto from './editarProducto.js';
 
 const ProductoDetalle = () => {
     const { id } = useParams(); // Obtenemos el id de la url
@@ -9,6 +10,13 @@ const ProductoDetalle = () => {
     const [mostrarPopup, setMostrarPopup] = useState(false); // Estado para controlar el popup
     const [nuevaOferta, setNuevaOferta] = useState(''); // Estado para la nueva oferta
     const [mensajeExito, setMensajeExito] = useState(false); //Estado para el mensaje de exito
+
+    const [isAdmin] = useState(true); // esto simula que el usuario es admin, se debe implementar esta logica en backend por seguridad
+
+    //Popup de eliminacion
+    const [isPopupVisibleEliminar, setIsPopupVisibleEliminar] = useState(false);
+    const [successMessageEliminar, setSuccessMessageEliminar] = useState("");
+
 
     //Aqui debe ir la logica o la carga de los detalles de un producto
     useEffect(() => {
@@ -35,7 +43,7 @@ const ProductoDetalle = () => {
             alert('Por favor, ingresa una oferta valida');
             return;
         }
-        
+
         if (parseFloat(nuevaOferta) <= producto.precio) {
             alert('La oferta debe ser mayor al precio actual');
         } else {
@@ -47,6 +55,37 @@ const ProductoDetalle = () => {
             //Aqui deberia ir la logica del backend y bd
         }
     };
+
+
+    //Para mostrar popup de agregar producto
+    const [mostrarEditar, setMostrarEditar] = useState(false);
+
+    const abrirEditar = () => {
+        setMostrarEditar(true);
+    };
+
+    const cerrarEditar = () => {
+        setMostrarEditar(false);
+    };
+
+    //Popup de eliminacion
+
+    const abrirPopupEliminar = () => {
+        setIsPopupVisibleEliminar(true);
+    };
+    
+    const cerrarPopupEliminar = () => {
+        setIsPopupVisibleEliminar(false);
+    };
+    
+    const eliminarProducto = async () => {
+        // Aqui va la logica backend de eliminacion del producto
+        
+        // Esto deberia salir siempre y cuando la eliminacion sale bien
+        setSuccessMessageEliminar("Producto eliminado correctamente");
+        setIsPopupVisibleEliminar(false);
+    };
+
 
     if (!producto) {
         return <div>Producto no encontrado</div>;
@@ -68,7 +107,14 @@ const ProductoDetalle = () => {
                     <button onClick={handleNuevaOfertaClick} className="boton-oferta">
                         Hacer nueva oferta
                     </button>
-
+                    {isAdmin && (
+                            <button onClick={abrirEditar} className="boton-agregar">Editar producto</button>
+                    )}
+                    {isAdmin && (
+                            <button onClick={abrirPopupEliminar} className="boton-editar-eliminar">Eliminar producto</button>
+                    )}
+                {/* cerrar PopUp */}
+                {mostrarEditar && <EditarProducto onClose={cerrarEditar} producto={producto}/>}
                 </div>
                 {/* Popup de oferta */}
                 {mostrarPopup && (
@@ -87,6 +133,17 @@ const ProductoDetalle = () => {
                     </div>
                 </div>
             )}
+            {/* Popup de eliminar */}
+            {isPopupVisibleEliminar && (
+                <div className="popup">
+                    <div className="popupEliminar">
+                        <h2>¿Seguro que deseas eliminar este producto? :</h2>
+                        <h4>{producto.nombre}</h4>
+                        <button className="Cancelarbutton-e" onClick={cerrarPopupEliminar}>Cancelar</button>
+                        <button className="Eliminarbutton" onClick={eliminarProducto}>Eliminar</button>
+                    </div>
+                </div>
+            )}
 
             {mensajeExito && (
                 <div className="success-popup" onClick={() => setMensajeExito(false)}>
@@ -95,6 +152,15 @@ const ProductoDetalle = () => {
                     </div>
                 </div>
             )}
+
+            {successMessageEliminar && (
+                <div className="success-popup" onClick={() => setSuccessMessageEliminar(false)}>
+                    <div className="success-content">
+                        <span className="icon">✔️</span> Producto Eliminado correctamente
+                    </div>
+                </div>
+            )}
+
             </div>
             <div className="desc-container">
                 <div className='desc'>
