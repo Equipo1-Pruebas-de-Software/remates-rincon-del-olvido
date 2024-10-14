@@ -1,4 +1,5 @@
 import Bid from '../models/Bids.js';
+import Product from '../models/Products.js';
 
 export default class BidController{
     async getBids(req, res){
@@ -68,6 +69,21 @@ export default class BidController{
 
     async createBid(req, res){
         try {
+            const product = await Product.findByPk(req.body.productId);
+            if(!product){
+                return res.status(404).json({
+                    status: 'error',
+                    status_code: 404,
+                    message: 'Product not found',
+                })
+            }
+            if (req.body.bid < product.start_price) {
+                return res.status(400).json({
+                    status: 'error',
+                    status_code: 400,
+                    message: 'The bid must be at least equal to the product price.',
+                });
+            }
             await Bid.create(req.body);
             res.status(201).json({
                 status: 'success',
