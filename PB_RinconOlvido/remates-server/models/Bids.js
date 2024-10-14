@@ -21,12 +21,12 @@ Bid.init({
     productId: {
         type: DataTypes.INTEGER,
         allowNull: false
-    }
+    },
 }, {
     sequelize,
     modelName: 'Bid',
     tablename: 'bids',
-    timestamps: false
+    timestamps: true
 });
 
 export default Bid;

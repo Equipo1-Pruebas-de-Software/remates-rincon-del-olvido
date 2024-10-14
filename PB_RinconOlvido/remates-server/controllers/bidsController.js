@@ -49,7 +49,7 @@ export default class BidController{
         try {
             const bids = await Bid.findAll({
                 where:{
-                    productId: req.params.productid
+                    productId: req.params.productId
                 }
             });
             res.status(200).json({
@@ -68,8 +68,11 @@ export default class BidController{
     }
 
     async createBid(req, res){
+        const productId = req.body.productId;
+        const userId = req.body.userId;
+        const bid = req.body.bid;
         try {
-            const product = await Product.findByPk(req.body.productId);
+            const product = await Product.findByPk(productId);
             if(!product){
                 return res.status(404).json({
                     status: 'error',
@@ -77,19 +80,44 @@ export default class BidController{
                     message: 'Product not found',
                 })
             }
-            if (req.body.bid < product.start_price) {
-                return res.status(400).json({
-                    status: 'error',
-                    status_code: 400,
-                    message: 'The bid must be at least equal to the product price.',
+            const existingUserBid = await Bid.findOne({
+                where: {
+                    userId: userId,
+                    productId: productId
+                }
+            })
+            if (existingUserBid) {
+                if (bid > existingUserBid.bid){
+                    await existingUserBid.update({bid});
+                    return res.status(200).json({
+                        status: 'success',
+                        status_code: 200,
+                        message: 'Bid updated successfully',
+                    });
+                }
+                else {
+                    return res.status(400).json({
+                        status: 'error',
+                        status_code: 400,
+                        message: 'The new bid must be higher than the current bid.',
+                    });
+                }
+            }
+            else{
+                if (bid < product.start_price) {
+                    return res.status(400).json({
+                        status: 'error',
+                        status_code: 400,
+                        message: 'The bid must be at least equal to the product price.',
+                    });
+                }
+                await Bid.create(req.body);
+                res.status(201).json({
+                    status: 'success',
+                    status_code: 201,
+                    message: 'Bid created successfully',
                 });
             }
-            await Bid.create(req.body);
-            res.status(201).json({
-                status: 'success',
-                status_code: 201,
-                message: 'Bid created successfully',
-            });
         } catch (error) {
             res.status(500).json({
                 status: 'error',
