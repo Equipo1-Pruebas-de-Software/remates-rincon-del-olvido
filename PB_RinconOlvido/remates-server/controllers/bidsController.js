@@ -69,7 +69,7 @@ export default class BidController{
 
     async createBid(req, res){
         const productId = req.body.productId;
-        const userId = req.body.userId;
+        const userId = req.userid;
         const bid = req.body.bid;
         try {
             const product = await Product.findByPk(productId);
