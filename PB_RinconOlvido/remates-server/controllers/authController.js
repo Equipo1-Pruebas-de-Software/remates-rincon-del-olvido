@@ -4,6 +4,27 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 export default class AuthController{
+
+    async auth(req, res){
+        try {
+            const token = req.cookies.auth;
+            const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+            res.status(200).json({
+                status: 'success',
+                status_code: 200,
+                message: 'User authenticated',
+                data: decoded
+            });
+        } catch (error) {
+            console.log(error)
+            res.status(409).json({
+                status: 'error',
+                status_code: 409,
+                message: 'Unauthorized'
+            });
+        }
+    }
+
     async userLogin(req, res){
         try {
             const { email, password } = req.body;

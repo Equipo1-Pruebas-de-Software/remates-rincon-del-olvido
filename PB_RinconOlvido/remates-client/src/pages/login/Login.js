@@ -2,9 +2,11 @@ import { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './login.css';
+import { BASE_URL } from '../../services/constants';
+import { toast } from 'react-hot-toast';
 
 const Login = () => {
-    const [formData, setFormData] = useState({ username: '', password: '' });
+    const [formData, setFormData] = useState({ email: '', password: '' });
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -13,11 +15,12 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:5000/login', formData);
-            localStorage.setItem('token', res.data.token);
-            alert('Login exitoso');
+            console.log(`${BASE_URL}login`);
+            await axios.post(`${BASE_URL}/login/user`, formData, { withCredentials: true });
+            window.location.href = '/catalogo';
         } catch (error) {
-            alert('Error al iniciar sesión');
+            console.log(error);
+            toast.error('Credenciales incorrectas');
         }
     };
 
@@ -28,7 +31,7 @@ const Login = () => {
                 <div className="login-card">
                     <h2>Iniciar Sesión</h2>
                     <form onSubmit={handleSubmit}>
-                        <input type="text" name="username" placeholder="Usuario" onChange={handleInputChange} />
+                        <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleInputChange} />
                         <input type="password" name="password" placeholder="Contraseña" onChange={handleInputChange} />
                         <button type="submit">Iniciar Sesión</button>
                     </form>

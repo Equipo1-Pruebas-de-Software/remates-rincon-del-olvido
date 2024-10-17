@@ -1,11 +1,14 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import './detalleproducto.css';
-import EditarProducto from './editarProducto.js';
+import EditarProducto from '../catalogo/editarProducto.js';
+import { BASE_URL } from '../../services/constants.js';
+import axios from 'axios';
 
 const ProductoDetalle = () => {
     const { id } = useParams(); // Obtenemos el id de la url
     const [producto, setProducto] = useState(null);
+    const [tiempoRestante, setTiempoRestante] = useState('');
 
     const [mostrarPopup, setMostrarPopup] = useState(false); // Estado para controlar el popup
     const [nuevaOferta, setNuevaOferta] = useState(''); // Estado para la nueva oferta
@@ -17,19 +20,41 @@ const ProductoDetalle = () => {
     const [isPopupVisibleEliminar, setIsPopupVisibleEliminar] = useState(false);
     const [successMessageEliminar, setSuccessMessageEliminar] = useState("");
 
-
     //Aqui debe ir la logica o la carga de los detalles de un producto
     useEffect(() => {
-        // Aqui hago simulacion de datos de la bd, que cargaron aqui y se extrae el necesario para obtener su info
-        const productos = [
-            { id: 1, nombre: 'Producto 1', precio: 1000, fecha_termino: '2024-10-07', rareza: 'comun', imagen: 'https://via.placeholder.com/150' },
-            { id: 2, nombre: 'Producto 2', precio: 100, fecha_termino: '2024-10-08', rareza: 'raro', imagen: 'https://via.placeholder.com/150' },
-            { id: 3, nombre: 'Producto 3', precio: 50, fecha_termino: '2024-10-09', rareza: 'poco comun', imagen: 'https://via.placeholder.com/150' },
-            { id: 4, nombre: 'Producto 4', precio: 500, fecha_termino: '2024-10-07', rareza: 'extravagante', imagen: 'https://via.placeholder.com/150' },
-        ];
-        const productoEncontrado = productos.find(prod => prod.id === parseInt(id));
-        setProducto(productoEncontrado);
+        const fetchProducto = async () => {
+            try {
+                const response = await axios.get(`${BASE_URL}/products/${id}`, { withCredentials: true });
+                if (response.data.status === 'success') {
+                    const productoData = response.data.data;
+                    setProducto({
+                        id: productoData.id,
+                        nombre: productoData.name,
+                        precio: parseFloat(productoData.start_price),
+                        fecha_termino: productoData.end_date,
+                        imagen: productoData.image_url,
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching product:', error);
+            }
+        };
+
+        fetchProducto();
     }, [id]);
+
+    useEffect(() => {
+        if (producto) {
+            const interval = setInterval(() => {
+                setTiempoRestante(calcularTiempoRestante(producto.fecha_termino));
+            }, 1000); // Actualiza cada segundo
+
+            // Calcular el tiempo restante inmediatamente
+            setTiempoRestante(calcularTiempoRestante(producto.fecha_termino));
+
+            return () => clearInterval(interval); // Limpiar el intervalo al desmontar el componente
+        }
+    }, [producto]);
 
     // Funcion para nuevas ofertas
     const handleNuevaOfertaClick = () => {
@@ -56,7 +81,6 @@ const ProductoDetalle = () => {
         }
     };
 
-
     //Para mostrar popup de agregar producto
     const [mostrarEditar, setMostrarEditar] = useState(false);
 
@@ -69,7 +93,6 @@ const ProductoDetalle = () => {
     };
 
     //Popup de eliminacion
-
     const abrirPopupEliminar = () => {
         setIsPopupVisibleEliminar(true);
     };
@@ -86,6 +109,22 @@ const ProductoDetalle = () => {
         setIsPopupVisibleEliminar(false);
     };
 
+    const calcularTiempoRestante = (fechaTermino) => {
+        const ahora = new Date();
+        const termino = new Date(fechaTermino);
+        const diferencia = termino - ahora;
+
+        if (diferencia <= 0) {
+            return "Finalizado";
+        }
+
+        const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+        const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+        return `${dias}d, ${horas}h, ${minutos}min, ${segundos}s`;
+    };
 
     if (!producto) {
         return <div>Producto no encontrado</div>;
@@ -95,24 +134,24 @@ const ProductoDetalle = () => {
         <div>
             <div className="detalle-container">
                 <div className="image-container">
-                    <img src={producto.imagen} alt={producto.nombre} className="imagen-producto" />
+                    {/* Cambiar cuando esté listo, a producto.imagen */}
+                    <img src="https://media.istockphoto.com/id/931643150/vector/picture-icon.jpg?s=612x612&w=0&k=20&c=St-gpRn58eIa8EDAHpn_yO4CZZAnGD6wKpln9l3Z3Ok=" alt={producto.nombre} className="imagen-producto" />
                 </div>
                 <div className="info">
                     <h1>{producto.nombre}</h1>
-                    <p>Rareza: {producto.rareza}</p>
                     <p>Precio: ${producto.precio}</p>
-                    <p>Termina: {new Date(producto.fecha_termino).toLocaleDateString()}</p>
+                    <p>Termina: {tiempoRestante}</p>
 
                     {/* Boton para nueva oferta */}
                     <button onClick={handleNuevaOfertaClick} className="boton-oferta">
                         Hacer nueva oferta
                     </button>
-                    {isAdmin && (
+                    {/* {isAdmin && (
                             <button onClick={abrirEditar} className="boton-agregar">Editar producto</button>
                     )}
                     {isAdmin && (
                             <button onClick={abrirPopupEliminar} className="boton-editar-eliminar">Eliminar producto</button>
-                    )}
+                    )} */}
                 {/* cerrar PopUp */}
                 {mostrarEditar && <EditarProducto onClose={cerrarEditar} producto={producto}/>}
                 </div>
