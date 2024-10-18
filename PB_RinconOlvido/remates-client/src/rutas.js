@@ -2,9 +2,9 @@ import React from 'react';
 import {Route, Routes} from 'react-router-dom';
 import Catalogo from './pages/catalogo/Catalogo';
 import Login from './pages/login/Login';
-import Perfil from './Perfil';
+import Perfil from './pages/perfil/Perfil';
 import ProductoDetalle from './pages/detalle-producto/Detalleproducto';
-import Register from './Register';
+import Register from './pages/register/Register';
 import Layout from './components/ProtectedLayout';
 import { Toaster } from 'react-hot-toast';
 
