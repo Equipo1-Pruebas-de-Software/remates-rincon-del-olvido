@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import Header from '../Header';
+import Header from './header/Header';
 import { BASE_URL } from '../services/constants';
 import axios from 'axios';
 import toast from 'react-hot-toast';
