@@ -1,0 +1,94 @@
+.popupMediosPago {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.popupMediosPago-inner {
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    width: 25%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.popupMediosPago-field {
+    margin-bottom: 10px;
+}
+
+.popupMediosPago-field label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.popupMediosPago-field input {
+    width: 96%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.popupMediosPago-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.popupMediosPago-buttons button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.popupMediosPago-buttons button:hover {
+    background-color: #0056b3;
+}
+
+.popupMediosPago-buttons button:last-child {
+    background-color: #ff2600;
+}
+
+.popupMediosPago-buttons button:last-child:hover {
+    background-color: #b30404;
+}
+
+/* Estilos del popup de éxito */
+.success-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.success-content {
+    background-color: #28a745;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 18px;
+    width: 250px;
+}
+
+.success-content .icon {
+    font-size: 24px;
+    margin-right: 10px;
+}

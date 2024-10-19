@@ -1,0 +1,116 @@
+.perfil-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px);
+    padding: 40px;
+}
+
+.perfil-card {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+}
+
+.medios-pago {
+    margin-top: 20px;
+}
+
+.medios-pago ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px;
+}
+
+.medios-pago li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.icono-tarjeta {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.agregar-medio-pago {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.agregar-medio-pago:hover {
+    background-color: #0056b3;
+}
+
+.foto-usuario {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    object-fit: cover;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.foto-container {
+    position: relative;
+    display: inline-block;
+}
+
+.foto-usuario:hover {
+    opacity: 0.7;
+}
+
+.icono-lapiz-img {
+    position: absolute;
+    top: 10%;
+    left: 90%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    display: none;
+}
+
+.foto-container:hover .icono-lapiz-img {
+    display: block;
+}
+
+.fotoperfil-buttons {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.fotoperfil-buttons button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.fotoperfil-buttons button:hover {
+    background-color: #0056b3;
+}
+
+.popupFoto input[type="file"] {
+    margin-top: 10px;
+    padding: 20px 20px;
+    cursor: pointer;
+}
