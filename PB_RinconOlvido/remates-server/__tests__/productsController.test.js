@@ -57,19 +57,19 @@ describe('ProductController', () => {
             {
                 id: 1,
                 name: 'Product 1',
-                price: '100000',
+                price: 100000,
                 end_date: '2024-12-31T23:59:59.000Z',
                 image_url: 'https://s3.aws.bucketname.com/asd123',
-                Bids: [{ bid: '5000' }],
+                Bids: [{ bid: 5000, toJSON: function() { return { ...this }; } }],
                 toJSON: function() { return { ...this }; }
             },
             {
                 id: 2,
                 name: 'Product 2',
-                price: '100000',
+                price: 100000,
                 end_date: '2024-12-31T23:59:59.000Z',
                 image_url: 'https://s3.aws.bucketname.com/asd123',
-                Bids: [],
+                Bids: [{ toJSON: function() { return { ...this }; } }],
                 toJSON: function() { return { ...this }; }
             }
         ];
@@ -101,9 +101,10 @@ describe('ProductController', () => {
         const mockProduct = { 
             id: 3, 
             name: 'Cocina 5000', 
-            price: '100000', 
+            price: 100000, 
             end_date: "2024-12-31T23:59:59.000Z", 
-            image_url: "https://s3.aws.bucketname.com/asd123" 
+            image_url: "https://s3.aws.bucketname.com/asd123",
+            toJSON: function() { return { ...this }; }
         };
 
         Product.findByPk.mockResolvedValue(mockProduct);
