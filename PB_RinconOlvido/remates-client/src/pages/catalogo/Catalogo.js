@@ -15,6 +15,7 @@ const Catalogo = () => {
     const [precioMax, setPrecioMax] = useState('');
     const [productosFiltrados, setProductosFiltrados] = useState([]);
     const [fechaFiltro, setFechaFiltro] = useState('');
+    const [timeRemaining, setTimeRemaining] = useState({});
 
     useEffect(() => {
         const fetchProductos = async () => {
@@ -32,6 +33,28 @@ const Catalogo = () => {
         fetchProductos();
     }, []);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const now = new Date();
+            const updatedTimeRemaining = productos.reduce((acc, producto) => {
+                const end = new Date(producto.end_date);
+                const diff = end - now;
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                acc[producto.id] = `${days}d, ${hours}h, ${minutes}min, ${seconds}s`;
+                return acc;
+            }, {});
+
+            setTimeRemaining(updatedTimeRemaining);
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [productos]);
+
     const confirmarEliminacion = () => {
         setProductosFiltrados(productosFiltrados.filter(p => p.id !== productoEliminar.id));
         setProductoEliminar(null); // Cierra el popup
@@ -47,11 +70,11 @@ const Catalogo = () => {
 
     const aplicarFiltro = () => {
         let minPrecio = precioMin === '' ? 0 : parseFloat(precioMin);
-        let maxPrecio = precioMax === '' ? Math.max(...productos.map(p => parseFloat(p.start_price))) : parseFloat(precioMax);
+        let maxPrecio = precioMax === '' ? Math.max(...productos.map(p => parseFloat(p.price))) : parseFloat(precioMax);
 
         const productosFiltrados = productos.filter(producto => {
             const coincideNombre = producto.name.toLowerCase().includes(filtroNombre.toLowerCase());
-            const coincidePrecio = parseFloat(producto.start_price) >= minPrecio && parseFloat(producto.start_price) <= maxPrecio;
+            const coincidePrecio = parseFloat(producto.price) >= minPrecio && parseFloat(producto.price) <= maxPrecio;
             const coincideFecha = !fechaFiltro || new Date(producto.end_date).toLocaleDateString() === new Date(fechaFiltro).toLocaleDateString();
 
             return coincideNombre && coincidePrecio && coincideFecha;
@@ -109,12 +132,18 @@ const Catalogo = () => {
                     {productosFiltrados.map(producto => (
                         <Link key={producto.id} to={`/producto/${producto.id}`} className="card-link">
                             <div className="catalogo-card">
-                                {/* Cambiar no-img.jpg por {producto.image_url} cuando esté listo el manejo de imagenes en S3*/}
-                                <img src="no-img.jpg" alt={producto.name} className="catalogo-imagen-producto" />
+                                <img src={"no-img.jpg"} alt={producto.name} className="catalogo-imagen-producto" />
                                 <div className="catalogo-info">
                                     <h3>{producto.name}</h3>
-                                    <p><span>Precio Actual: ${producto.start_price}</span></p>
-                                    <p><span>Termina:</span> {new Date(producto.end_date).toLocaleDateString()}</p>
+                                    {producto.Bids.length === 0 ? (
+                                        <>
+                                            <p><span>Precio Inicial: ${producto.price}</span></p>
+                                            <p style={{ color: 'blue' }}><strong>Sé el primero en pujar</strong></p>
+                                        </>
+                                    ) : (
+                                        <p><span>Precio Actual: ${producto.Bids[0].bid}</span></p>
+                                    )}
+                                    <p><span>Termina:</span> {timeRemaining[producto.id]}</p>
                                 </div>
                             </div>
                         </Link>
