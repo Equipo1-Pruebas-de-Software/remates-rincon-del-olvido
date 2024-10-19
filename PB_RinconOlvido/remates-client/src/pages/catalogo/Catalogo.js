@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const Catalogo = () => {
     const [productos, setProductos] = useState([]);
-    const [isAdmin] = useState(true); // esto simula que el usuario es admin, se debe implementar esta logica en backend por seguridad
+    const [isAdmin, setIsAdmin] = useState(false); // esto simula que el usuario es admin, se debe implementar esta logica en backend por seguridad
     const [productoEliminar, setProductoEliminar] = useState(null);
     const [mostrarPopup, setMostrarPopup] = useState(false);
     const [filtroNombre, setFiltroNombre] = useState('');
@@ -31,6 +31,24 @@ const Catalogo = () => {
         };
 
         fetchProductos();
+    }, []);
+
+    useEffect(() => {
+        const fetchUserRole = async () => {
+            try {
+                const response = await axios.get(`${BASE_URL}/auth`, { withCredentials: true });
+                if (response.data.status === 'success') {
+                    const { user_role } = response.data.data;
+                    if (user_role === 'admin') {
+                        setIsAdmin(true);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching user role:', error);
+            }
+        };
+    
+        fetchUserRole();
     }, []);
 
     useEffect(() => {

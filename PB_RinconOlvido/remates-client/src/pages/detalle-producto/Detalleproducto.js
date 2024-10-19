@@ -21,7 +21,7 @@ const ProductoDetalle = () => {
 
     const [imagenPrincipal, setImagenPrincipal] = useState(producto?.imagen); // Imagen de portada
 
-    const [isAdmin] = useState(true); // esto simula que el usuario es admin, se debe implementar esta logica en backend por seguridad
+    const [isAdmin, setIsAdmin] = useState(false);
 
     //Popup de eliminacion
     const [isPopupVisibleEliminar, setIsPopupVisibleEliminar] = useState(false);
@@ -58,6 +58,24 @@ const ProductoDetalle = () => {
 
         fetchProducto();
     }, [id]);
+
+    useEffect(() => {
+        const fetchUserRole = async () => {
+            try {
+                const response = await axios.get(`${BASE_URL}/auth`, { withCredentials: true });
+                if (response.data.status === 'success') {
+                    const { user_role } = response.data.data;
+                    if (user_role === 'admin') {
+                        setIsAdmin(true);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching user role:', error);
+            }
+        };
+    
+        fetchUserRole();
+    }, []);
 
     useEffect(() => {
         if (producto) {
@@ -208,12 +226,14 @@ const ProductoDetalle = () => {
                             ))}
                         </select>
                     </div>
-                    {/* {isAdmin && (
+
+                    {isAdmin && (
                             <button onClick={abrirEditar} className="boton-agregar">Editar producto</button>
                     )}
                     {isAdmin && (
                             <button onClick={abrirPopupEliminar} className="boton-editar-eliminar">Eliminar producto</button>
-                    )} */}
+                    )}
+
                 {/* cerrar PopUp */}
                 {mostrarEditar && <EditarProducto onClose={cerrarEditar} producto={producto}/>}
                 </div>

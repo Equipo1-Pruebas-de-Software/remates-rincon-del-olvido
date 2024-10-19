@@ -1,5 +1,7 @@
 import { useState, useRef } from 'react';
 import './catalogo.css';
+import { BASE_URL } from '../../services/constants';
+import axios from 'axios';
 
 const AgregarProductoPopup = ({ onClose }) => {
     const [nombreProducto, setNombreProducto] = useState('');
@@ -49,22 +51,40 @@ const AgregarProductoPopup = ({ onClose }) => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (validarFormulario()) { 
-            // Si los campos tienen contenido, se muestra mensaje de exito
-            setMensajeExito(true);
+        if (validarFormulario()) {
+            // Creando un FormData para poder enviar la imagen junto con los datos
+            const formData = new FormData();
+            formData.append('name', nombreProducto);
+            formData.append('price', precioBase);
+            formData.append('end_date', fechaTermino);
+            formData.append('image_url', "https://png.pngtree.com/png-clipart/20200224/original/pngtree-question-mark-icon-for-your-project-png-image_5214036.jpg"); // Aquí suponemos que almacenarás la URL de la imagen directamente
 
-            // Oculta el popup despues de un tiempo
-            setTimeout(() => {
-                setMensajeExito(false);
-            }, 10000);  // Espera 10 segundos antes de cerrar el popup
+            // Esto para imagenes adicionales
+            /*
+            imagenesAdicionales.forEach((imagen, index) => {
+                formData.append(`additional_image_${index}`, imagen);
+            });
+            */
 
-            //Deberia ir aqui la logica backend de base de datos
 
-            // Aqui se limpian los campos del formulario
-            limpiarCampos();
+            try {
+                await axios.post(`${BASE_URL}/products`, formData, {withCredentials: true});
+                // Mostrar el mensaje de exito y se borra el formulario
+                setMensajeExito(true);
+                limpiarCampos();
+    
+                // Ocultar el popup despues de un tiempo
+                setTimeout(() => {
+                    setMensajeExito(false);
+                    onClose();
+                }, 3000);
+            } catch (error) {
+                console.error('Error al enviar los datos:', error);
+                alert('Ocurrió un error al agregar el producto');
+            }
         }
     };
 

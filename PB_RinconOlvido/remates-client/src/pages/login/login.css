@@ -12,6 +12,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 50px;
     width: 350px;
+    max-height: 220px;
     text-align: center;
 }
 
@@ -28,7 +29,7 @@
     box-sizing: border-box;
 }
 
-.login-card button {
+.loginto-button {
     background-color: #007bff;
     color: white;
     border: none;
@@ -39,7 +40,7 @@
     transition: background-color 0.3s ease;
 }
 
-.login-card button:hover {
+.loginto-button:hover {
     background-color: #0056b3;
 }
 
@@ -86,4 +87,21 @@
     background-color: transparent;
     z-index: 10;
     margin: 0;
+}
+
+.admin-log {
+    font-size: 13px;
+    display: block;
+    color: #007bff;
+    text-decoration: underline;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.admin-log:hover {
+    color: #0056b3;
+    text-decoration: underline;
 }

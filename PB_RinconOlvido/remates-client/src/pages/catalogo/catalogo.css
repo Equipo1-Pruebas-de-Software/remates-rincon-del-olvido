@@ -22,11 +22,12 @@
 
 .catalogo-card {
     border: 1px solid #ccc;
-    padding: 16px;
+    padding: 13px;
     display: flex;
     width: 100%; /* 400px anteriormente*/
     height: 50%;
     min-height: 220px;
+    max-width: 430px;
     /*max-width: 400px;*/
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
