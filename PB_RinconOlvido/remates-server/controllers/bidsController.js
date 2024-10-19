@@ -82,13 +82,12 @@ export default class BidController{
             }
             const existingUserBid = await Bid.findOne({
                 where: {
-                    userId: userId,
                     productId: productId
                 }
             })
             if (existingUserBid) {
                 if (bid > existingUserBid.bid){
-                    await existingUserBid.update({bid});
+                    await existingUserBid.update({ bid, userId });
                     return res.status(200).json({
                         status: 'success',
                         status_code: 200,

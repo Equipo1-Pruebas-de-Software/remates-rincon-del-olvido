@@ -65,6 +65,7 @@ describe('BidController', () => {
     });
 
     test('should create a new bid if no previous bid exists and the bid is valid', async () => {
+        req.userId = 2;
         Product.findByPk.mockResolvedValue({ price: 100 });
         Bid.findOne.mockResolvedValue(null);
 
