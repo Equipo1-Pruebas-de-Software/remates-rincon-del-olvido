@@ -78,6 +78,9 @@ describe('AuthController', () => {
             status: 'success',
             status_code: 200,
             message: 'User logged in successfully',
+            data: Object({
+                user_role: 'user'
+            })
         });
     });
 
@@ -152,6 +155,9 @@ describe('AuthController', () => {
             status: 'success',
             status_code: 200,
             message: 'Admin logged in successfully',
+            data: Object({
+                user_role: 'admin'
+            })
         });
     });
 
@@ -257,7 +263,29 @@ describe('AuthController', () => {
             status: 'success',
             status_code: 200,
             message: 'User authenticated',
-            data: decodedToken,
+            data: Object({
+                user_role: 'user'
+            }),
+        });
+    });
+
+    test('should authenticate an admin successfully if the token is valid', async () => {
+        req.cookies.auth = 'validToken';
+        const decodedToken = { adminId: 1, role: 'admin' };
+        
+        jwt.verify.mockReturnValue(decodedToken);
+
+        await authController.auth(req, res);
+
+        expect(jwt.verify).toHaveBeenCalledWith('validToken', process.env.JWT_SECRET_KEY);
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith({
+            status: 'success',
+            status_code: 200,
+            message: 'User authenticated',
+            data: Object({
+                user_role: 'admin'
+            }),
         });
     });
 
