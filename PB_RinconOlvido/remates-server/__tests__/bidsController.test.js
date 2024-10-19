@@ -52,6 +52,7 @@ describe('BidController', () => {
         await sequelizeTest.close();
     });
 
+    // Create bid
     test('should return an error if the bid is less than the product price', async () => {
         req.body.bid = 50;
         Product.findByPk.mockResolvedValue({ price: 100 });
@@ -108,6 +109,7 @@ describe('BidController', () => {
         });
     });
 
+    // Get bid
     test('should return all bids', async () => {
         const mockBids = [
             { id: 1, userId: 1, productId: 1, bid: 100 },
@@ -127,6 +129,7 @@ describe('BidController', () => {
         });
     });
 
+    // Delete bid
     test('should delete a bid by ID', async () => {
         req.params = { id: 1 };
     
