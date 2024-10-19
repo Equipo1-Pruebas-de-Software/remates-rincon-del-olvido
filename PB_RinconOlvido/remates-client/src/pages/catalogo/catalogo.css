@@ -24,7 +24,9 @@
     border: 1px solid #ccc;
     padding: 16px;
     display: flex;
-    width: 400px; /* por alguna razon si pongo 100% las tarjetas salen de distinto tamaño*/
+    width: 100%; /* 400px anteriormente*/
+    height: 50%;
+    min-height: 220px;
     /*max-width: 400px;*/
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -160,6 +162,7 @@
     flex-grow: 1;
     overflow-y: auto;
     margin-bottom: 0px;
+    padding: 10px;
 }
 
 .agregar-form-col {
@@ -192,6 +195,7 @@
     border: 1px solid #ccc;
     padding: 3px;
     border-radius: 5px;
+    margin-bottom: 5px;
 }
 
 

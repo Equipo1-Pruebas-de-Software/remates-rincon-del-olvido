@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import './detalleproducto.css';
 import EditarProducto from '../catalogo/editarProducto.js';
@@ -6,19 +6,34 @@ import { BASE_URL } from '../../services/constants.js';
 import axios from 'axios';
 
 const ProductoDetalle = () => {
+    const navigate = useNavigate();
+
     const { id } = useParams(); // Obtenemos el id de la url
     const [producto, setProducto] = useState(null);
     const [tiempoRestante, setTiempoRestante] = useState('');
+    const [mostrarAdvertencia, setMostrarAdvertencia] = useState(false); //Estado para pop-up ofertar deshabilitado
 
     const [mostrarPopup, setMostrarPopup] = useState(false); // Estado para controlar el popup
     const [nuevaOferta, setNuevaOferta] = useState(''); // Estado para la nueva oferta
     const [mensajeExito, setMensajeExito] = useState(false); //Estado para el mensaje de exito
+
+    const [medioPagoSeleccionado, setMedioPagoSeleccionado] = useState(''); // Estado para el medio de pago seleccionado
+
+    const [imagenPrincipal, setImagenPrincipal] = useState(producto?.imagen); // Imagen de portada
 
     const [isAdmin] = useState(true); // esto simula que el usuario es admin, se debe implementar esta logica en backend por seguridad
 
     //Popup de eliminacion
     const [isPopupVisibleEliminar, setIsPopupVisibleEliminar] = useState(false);
     const [successMessageEliminar, setSuccessMessageEliminar] = useState("");
+
+    // Simulacion de medios de pago del usuario
+    const mediosPagoSimulados = [
+        '**** **** **** 1234',
+        '**** **** **** 5678',
+        '**** **** **** 9876',
+        '**** **** **** 4321'
+    ];
 
     //Aqui debe ir la logica o la carga de los detalles de un producto
     useEffect(() => {
@@ -34,6 +49,7 @@ const ProductoDetalle = () => {
                         fecha_termino: productoData.end_date,
                         imagen: productoData.image_url,
                     });
+                    setImagenPrincipal(productoData.image_url);
                 }
             } catch (error) {
                 console.error('Error fetching product:', error);
@@ -126,6 +142,14 @@ const ProductoDetalle = () => {
         return `${dias}d, ${horas}h, ${minutos}min, ${segundos}s`;
     };
 
+    const handleMedioPagoSeleccionado = (e) => {
+        setMedioPagoSeleccionado(e.target.value);
+    };
+
+    const irAlPerfil = () => {
+        navigate('/perfil');
+    };
+
     if (!producto) {
         return <div>Producto no encontrado</div>;
     }
@@ -136,16 +160,54 @@ const ProductoDetalle = () => {
                 <div className="image-container">
                     {/* Cambiar cuando esté listo, a producto.imagen */}
                     <img src="https://media.istockphoto.com/id/931643150/vector/picture-icon.jpg?s=612x612&w=0&k=20&c=St-gpRn58eIa8EDAHpn_yO4CZZAnGD6wKpln9l3Z3Ok=" alt={producto.nombre} className="imagen-producto" />
+                
+                    <div className="imagenes-adicionales-mostrar">
+                        
+                        {/* Esta añade la imagen principal en miniatura */}
+                        <img 
+                            src={producto.imagen} 
+                            alt="Imagen principal" 
+                            className="imagen-adicional"
+                            onClick={() => setImagenPrincipal(producto.imagen)} // Cambiar la imagen principal al hacer clic
+                        />
+
+                        {/* Esta añade imagenes adicionales en miniatura */}
+                        {/*producto.imagenesAdicionales.map((img, index) => (
+                            //<img 
+                                //key={index} 
+                                //src={img} 
+                                //alt={`Imagen adicional ${index + 1}`} 
+                                //className="imagen-adicional"
+                                //onClick={() => //setImagenPrincipal(img)} // Cambiar la imagen principal al hacer clic
+                            ///>
+                          ))*/
+                        }
+                    </div>
+
                 </div>
                 <div className="info">
                     <h1>{producto.nombre}</h1>
                     <p>Precio: ${producto.precio}</p>
                     <p>Termina: {tiempoRestante}</p>
 
-                    {/* Boton para nueva oferta */}
-                    <button onClick={handleNuevaOfertaClick} className="boton-oferta">
-                        Hacer nueva oferta
-                    </button>
+                    <div className="oferta-container">
+                        {/* Boton para nueva oferta */}
+                        <button 
+                        onClick={handleNuevaOfertaClick}
+                        //onClick={handleOfertarClick}
+                        //className={`boton-oferta ${!medioPagoSeleccionado ? 'disabled' : ''}`} //Para no permitir presionar sin medio de pago
+                        className="boton-oferta"
+                        >
+                            Hacer nueva oferta
+                        </button>
+                        {/* Dropdown para seleccionar medio de pago */}
+                        <select className="select-medio-pago" value={medioPagoSeleccionado} onChange={handleMedioPagoSeleccionado}>
+                            <option value="">Seleccionar Medio de Pago</option>
+                            {mediosPagoSimulados.map((medio, index) => (
+                                <option key={index} value={medio}>{medio}</option>
+                            ))}
+                        </select>
+                    </div>
                     {/* {isAdmin && (
                             <button onClick={abrirEditar} className="boton-agregar">Editar producto</button>
                     )}
@@ -196,6 +258,22 @@ const ProductoDetalle = () => {
                 <div className="success-popup" onClick={() => setSuccessMessageEliminar(false)}>
                     <div className="success-content">
                         <span className="icon">✔️</span> Producto Eliminado correctamente
+                    </div>
+                </div>
+            )}
+
+            {mostrarAdvertencia && (
+                <div className="success-popup" onClick={() => setMostrarAdvertencia(false)}>
+                    <div className="advertencia-content">
+                        <span className="icon">⚠️</span> Selecciona un medio de pago antes de ofertar
+                        <div className="advertencia-popup-buttons">
+                            <button onClick={irAlPerfil} className="advertencia-perfil">
+                                Agregar Medio de pago en perfil
+                            </button>
+                            <button onClick={() => setMostrarAdvertencia(false)} className="advertencia-cerrar">
+                                Cerrar
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

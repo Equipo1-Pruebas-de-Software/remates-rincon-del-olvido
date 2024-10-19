@@ -1,0 +1,32 @@
+.popupFoto {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popupFoto-inner {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); /* Sombra para darle más profundidad */
+    max-width: 400px; /* Limita el ancho para que no se vea tan grande en pantallas grandes */
+    width: 100%;
+    text-align: center;
+    animation: fadeIn 0.3s ease; /* Animación de aparición suave */
+}
+
+.popupFoto img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border: 3px solid #ddd; /* Borde alrededor de la imagen para resaltarla */
+}

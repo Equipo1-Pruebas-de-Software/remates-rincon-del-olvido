@@ -27,6 +27,28 @@
     padding: 20px;
 }
 
+.imagenes-adicionales-mostrar {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.imagen-adicional {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    margin-left: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: transform 0.2s;
+}
+
+.imagen-adicional:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
 .desc-container {
     display: flex;
     justify-content: center;
@@ -69,6 +91,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 9999;
 }
 
 .popup-content {
@@ -112,6 +135,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 9999;
 }
 
 .success-content {
@@ -127,6 +151,50 @@
 .success-content .icon {
     font-size: 24px;
     margin-right: 10px;
+}
+
+.advertencia-content {
+    background-color: #f3cf01;
+    color: black;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 18px;
+    width: 380px;
+    height: 110px;
+}
+
+.advertencia-popup-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.advertencia-cerrar, .advertencia-perfil {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.advertencia-cerrar {
+    background-color: whitesmoke;
+    color: black;
+    transition: background-color 0.3s;
+}
+
+.advertencia-cerrar:hover {
+    background-color: rgb(221, 221, 221);
+}
+
+.advertencia-perfil {
+    background-color: #28a745;
+    color: whitesmoke;
+    transition: background-color 0.3s;
+}
+
+.advertencia-perfil:hover {
+    background-color: #218a39;
 }
 
 .boton-editar-eliminar {
@@ -156,7 +224,7 @@
     text-align: center;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+    z-index: 9999;
 }
 
 .Eliminarbutton {
@@ -187,4 +255,35 @@
 
 .Cancelarbutton-e:hover {
     background-color: #1f6fca;
+}
+
+/* Estilos medios de pago */
+
+.oferta-container {
+    display: flex;
+    align-items: center;
+    gap:15px;
+    margin-top: 20px;
+}
+
+.select-medio-pago {
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    width: 220px;
+    color: #333;
+    box-sizing: border-box;
+    margin-top: 20px;
+}
+
+.select-medio-pago:hover {
+    border-color: #007bff;
+}
+
+.select-medio-pago:focus {
+    outline: none;
+    border-color: #0056b3;
 }

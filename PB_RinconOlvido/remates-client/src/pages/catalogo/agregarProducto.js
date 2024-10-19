@@ -5,7 +5,6 @@ const AgregarProductoPopup = ({ onClose }) => {
     const [nombreProducto, setNombreProducto] = useState('');
     const [precioBase, setPrecioBase] = useState('');
     const [fechaTermino, setFechaTermino] = useState('');
-    const [rareza, setRareza] = useState('');
     const [imagenPortada, setImagenPortada] = useState(null);
     const [imagenesAdicionales, setImagenesAdicionales] = useState([]);
 
@@ -22,7 +21,7 @@ const AgregarProductoPopup = ({ onClose }) => {
     };
 
     const validarFormulario = () => {
-        if (!nombreProducto || !precioBase || !fechaTermino || !rareza || !imagenPortada) {
+        if (!nombreProducto || !precioBase || !fechaTermino || !imagenPortada) {
             alert('Todos los campos obligatorios deben ser llenados.');
             return false;
         }
@@ -38,7 +37,6 @@ const AgregarProductoPopup = ({ onClose }) => {
         setNombreProducto('');
         setPrecioBase('');
         setFechaTermino('');
-        setRareza('');
         setImagenPortada(null);
         setImagenesAdicionales([]);
 
@@ -101,15 +99,6 @@ const AgregarProductoPopup = ({ onClose }) => {
                             onChange={(e) => setFechaTermino(e.target.value)}
                             required
                         />
-
-                        <label>Rareza:</label>
-                        <select value={rareza} onChange={(e) => setRareza(e.target.value)} required>
-                            <option value="">Seleccionar rareza</option>
-                            <option value="comun">Común</option>
-                            <option value="poco comun">Poco común</option>
-                            <option value="raro">Raro</option>
-                            <option value="extravagante">Extravagante</option>
-                        </select>
 
                         <label>Imagen de Portada:</label>
                         <input

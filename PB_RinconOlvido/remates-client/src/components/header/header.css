@@ -4,6 +4,7 @@
     top: 0;
     left: 0;
     width: 100%;
+    max-height: 21px;
     justify-content: space-between;
     align-items: center;
     background-color: #007bff;
@@ -20,7 +21,7 @@ nav a {
     margin: 0 30px;
     text-decoration: none;
     color: white;
-    padding: 5px 10px;
+    padding: 10px 10px;
     border-radius: 5px;
     transition: background-color 0.3s ease;
 }
@@ -32,7 +33,7 @@ nav a:hover {
 nav a.active {
     background-color: #0056b3; /* Fondo mas oscuro para la pag actual*/
     border-radius: 5px;
-    padding: 5px 10px;
+    padding: 10px 10px;
     color: #ffffff;
 }
 
