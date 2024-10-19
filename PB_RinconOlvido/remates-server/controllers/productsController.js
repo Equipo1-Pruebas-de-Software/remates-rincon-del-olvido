@@ -1,21 +1,37 @@
 import Product from '../models/Products.js';
+import Bid from '../models/Bids.js';
 
 export default class ProductController{
-    async getProducts(req, res){
+    async getProducts(req, res) {
         try {
-            const products = await Product.findAll();
+            const products = await Product.findAll({
+                include: [{
+                    model: Bid,
+                    attributes: ['bid']
+                }]
+            });
+
+            const productsWithStatus = products.map(product => {
+                const status = product.Bids.length === 0 ? 'started-nobids' : 'started-bidded';
+                return {
+                    ...product.toJSON(),
+                    auctionStatus: status
+                };
+            });
+
             res.status(200).json({
                 status: 'success',
                 status_code: 200,
                 message: 'Products retrieved successfully',
-                data: products
+                data: productsWithStatus
             });
         } catch (error) {
+            console.log(error);
             res.status(500).json({
                 status: 'error',
                 status_code: 500,
                 message: 'Unable to retrieve products',
-            })
+            });
         }
     }
 
