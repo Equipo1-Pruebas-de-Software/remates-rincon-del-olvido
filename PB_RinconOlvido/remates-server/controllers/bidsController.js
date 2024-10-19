@@ -49,7 +49,7 @@ export default class BidController{
         try {
             const bids = await Bid.findAll({
                 where:{
-                    productId: req.params.productId
+                    productId: req.params.productid
                 }
             });
             res.status(200).json({
@@ -82,13 +82,12 @@ export default class BidController{
             }
             const existingUserBid = await Bid.findOne({
                 where: {
-                    userId: userId,
                     productId: productId
                 }
             })
             if (existingUserBid) {
                 if (bid > existingUserBid.bid){
-                    await existingUserBid.update({bid});
+                    await existingUserBid.update({ bid, userId });
                     return res.status(200).json({
                         status: 'success',
                         status_code: 200,
@@ -104,7 +103,7 @@ export default class BidController{
                 }
             }
             else{
-                if (bid < product.start_price) {
+                if (bid < product.price) {
                     return res.status(400).json({
                         status: 'error',
                         status_code: 400,
