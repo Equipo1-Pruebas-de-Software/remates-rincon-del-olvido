@@ -134,14 +134,4 @@ export default class ProductController{
             });
         }
     }
-    
-    async getExpiredProducts() {
-        try {
-            const products = await Product.findAll();
-            const expiredProducts = products.filter(product => product.end_date < new Date());
-            return expiredProducts;
-        } catch (error) {
-            console.error('Unable to retrieve expired products', error);
-        }
-    }
 }

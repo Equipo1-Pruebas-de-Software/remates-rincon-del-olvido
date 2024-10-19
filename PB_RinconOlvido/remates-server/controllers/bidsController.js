@@ -185,20 +185,4 @@ export default class BidController{
             });
         }
     }
-
-    async getBidsForProduct(productId){
-        try {
-            const bids = await Bid.findAll({
-                where: {
-                    productId: productId
-                },
-                order: [
-                    ['bid', 'DESC']
-                ]
-            });
-            return bids;
-        } catch (error) {
-            console.error('Unable to retrieve bids for product', error);
-        }
-    }
 }
