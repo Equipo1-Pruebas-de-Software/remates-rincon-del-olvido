@@ -45,7 +45,7 @@ const ProductoDetalle = () => {
                     setProducto({
                         id: productoData.id,
                         nombre: productoData.name,
-                        precio: parseFloat(productoData.start_price),
+                        precio: parseFloat(productoData.price),
                         fecha_termino: productoData.end_date,
                         imagen: productoData.image_url,
                     });

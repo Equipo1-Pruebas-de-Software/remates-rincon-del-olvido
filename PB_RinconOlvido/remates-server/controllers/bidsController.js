@@ -111,7 +111,7 @@ export default class BidController{
                         message: 'The bid must be at least equal to the product price.',
                     });
                 }
-                await Bid.create(req.body);
+                await Bid.create({...req.body, userId: userId});
                 res.status(201).json({
                     status: 'success',
                     status_code: 201,
@@ -119,6 +119,7 @@ export default class BidController{
                 });
             }
         } catch (error) {
+            console.log(error);
             res.status(500).json({
                 status: 'error',
                 status_code: 500,
@@ -182,6 +183,22 @@ export default class BidController{
                 status_code: 500,
                 message: 'Unable to delete Bid',
             });
+        }
+    }
+
+    async getBidsForProduct(productId){
+        try {
+            const bids = await Bid.findAll({
+                where: {
+                    productId: productId
+                },
+                order: [
+                    ['bid', 'DESC']
+                ]
+            });
+            return bids;
+        } catch (error) {
+            console.error('Unable to retrieve bids for product', error);
         }
     }
 }
