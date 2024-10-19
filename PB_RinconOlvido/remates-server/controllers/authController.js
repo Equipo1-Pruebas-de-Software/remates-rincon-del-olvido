@@ -13,7 +13,7 @@ export default class AuthController{
                 status: 'success',
                 status_code: 200,
                 message: 'User authenticated',
-                data: decoded
+                data: { user_role: decoded.role }
             });
         } catch (error) {
             console.log(error)
@@ -63,6 +63,7 @@ export default class AuthController{
                 status: 'success',
                 status_code: 200,
                 message: 'User logged in successfully',
+                data: { user_role: 'user' }
             });
         } catch (error) {
             res.status(500).json({
@@ -112,6 +113,7 @@ export default class AuthController{
                 status: 'success',
                 status_code: 200,
                 message: 'Admin logged in successfully',
+                data: { user_role: 'admin' }
             });
         } catch (error) {
             res.status(500).json({
