@@ -17,7 +17,7 @@ const sequelize = new Sequelize({
     timezone: 'America/Santiago'
 });
 
-(async () => { 
+export const initializeDatabase = async () => { 
     try {
       await sequelize.authenticate();
       console.log('Connection to the database has been established successfully.');
@@ -30,6 +30,6 @@ const sequelize = new Sequelize({
     } catch (error) {
       console.error('Unable to connect to the database:', error);
     }
-})();
+};
 
 export default sequelize;

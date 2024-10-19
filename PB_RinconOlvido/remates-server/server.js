@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import routes from './controllers/routes.js';
 import initModels from './models/model.js';
 import "dotenv/config.js";
+import { initializeDatabase } from './database/database.js';
 
 const app = express();
 
@@ -14,6 +15,8 @@ app.use(cors({
 }));
 app.use(cookieParser());
 routes(app);
+
+await initializeDatabase();
 
 initModels();
 
