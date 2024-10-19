@@ -53,26 +53,75 @@ describe('ProductController', () => {
     });
 
     it('should retrieve all products', async () => {
-        Product.findAll.mockResolvedValue([{ id: 1, name: 'Product 1' }]);
+        const mockProducts = [
+            {
+                id: 1,
+                name: 'Product 1',
+                price: 100000,
+                end_date: '2024-12-31T23:59:59.000Z',
+                image_url: 'https://s3.aws.bucketname.com/asd123',
+                Bids: [{ bid: 5000, toJSON: function() { return { ...this }; } }],
+                toJSON: function() { return { ...this }; }
+            },
+            {
+                id: 2,
+                name: 'Product 2',
+                price: 100000,
+                end_date: '2024-12-31T23:59:59.000Z',
+                image_url: 'https://s3.aws.bucketname.com/asd123',
+                Bids: [{ toJSON: function() { return { ...this }; } }],
+                toJSON: function() { return { ...this }; }
+            }
+        ];
+
+        Product.findAll.mockResolvedValue(mockProducts);
+
         await productController.getProducts(req, res);
+
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
             status: 'success',
             status_code: 200,
             message: 'Products retrieved successfully',
-            data: expect.any(Array)
+            data: expect.arrayContaining([
+                expect.objectContaining({
+                    id: expect.any(Number),
+                    name: expect.any(String),
+                    price: expect.any(Number),
+                    end_date: expect.any(String),
+                    image_url: expect.any(String),
+                    Bids: expect.any(Array),
+                    auctionStatus: expect.any(String)
+                })
+            ])
         }));
     });
 
     it('should retrieve a product by id', async () => {
-        Product.findByPk.mockResolvedValue({ id: 1, name: 'Product 1', start_price: 100, end_date: "2024-12-31T23:59:59.000Z", image_url: "https://s3.aws.bucketname.com/asd123" });
+        const mockProduct = { 
+            id: 3, 
+            name: 'Cocina 5000', 
+            price: 100000, 
+            end_date: "2024-12-31T23:59:59.000Z", 
+            image_url: "https://s3.aws.bucketname.com/asd123",
+            toJSON: function() { return { ...this }; }
+        };
+
+        Product.findByPk.mockResolvedValue(mockProduct);
         await productController.getProductbyId(req, res);
+
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
             status: 'success',
             status_code: 200,
             message: 'Product retrieved successfully',
-            data: expect.any(Object)
+            data: expect.objectContaining({
+                id: expect.any(Number),
+                name: expect.any(String),
+                price: expect.any(Number),
+                end_date: expect.any(String),
+                image_url: expect.any(String)
+            })
         }));
     });
 

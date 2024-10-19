@@ -10,15 +10,20 @@ export default class ProductController{
                     attributes: ['bid']
                 }]
             });
-
+    
             const productsWithStatus = products.map(product => {
                 const status = product.Bids.length === 0 ? 'started-nobids' : 'started-bidded';
                 return {
                     ...product.toJSON(),
+                    price: parseFloat(product.price),
+                    Bids: product.Bids.map(bid => ({
+                        ...bid.toJSON(),
+                        bid: parseFloat(bid.bid)
+                    })),
                     auctionStatus: status
                 };
             });
-
+    
             res.status(200).json({
                 status: 'success',
                 status_code: 200,
@@ -45,13 +50,20 @@ export default class ProductController{
                     message: 'Product not found',
                 });
             }
+    
+            const productStandard = {
+                ...product.toJSON(),
+                price: parseFloat(product.price),
+            };
+    
             res.status(200).json({
                 status: 'success',
                 status_code: 200,
                 message: 'Product retrieved successfully',
-                data: product
+                data: productStandard
             });
         } catch (error) {
+            console.log(error);
             res.status(500).json({
                 status: 'error',
                 status_code: 500,
