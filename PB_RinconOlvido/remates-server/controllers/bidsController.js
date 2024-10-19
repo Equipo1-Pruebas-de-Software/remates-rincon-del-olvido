@@ -49,7 +49,7 @@ export default class BidController{
         try {
             const bids = await Bid.findAll({
                 where:{
-                    productId: req.params.productId
+                    productId: req.params.productid
                 }
             });
             res.status(200).json({
