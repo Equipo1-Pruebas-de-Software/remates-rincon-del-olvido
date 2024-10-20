@@ -124,6 +124,7 @@ const ProductoDetalle = () => {
 
     const cerrarEditar = () => {
         setMostrarEditar(false);
+        window.location.reload();
     };
 
     //Popup de eliminacion
@@ -137,10 +138,22 @@ const ProductoDetalle = () => {
     
     const eliminarProducto = async () => {
         // Aqui va la logica backend de eliminacion del producto
+
+        try {
+            await axios.delete(`${BASE_URL}/products/${id}`, {withCredentials: true});
+            // Mostrar el mensaje de exito y se borra el formulario
+            setSuccessMessageEliminar("Producto eliminado correctamente");
+            setIsPopupVisibleEliminar(false);
+            //Mandar a catalogo
+            setTimeout(() => {
+                navigate('/catalogo');
+            }, 2000); // lo manda despues de 2s
+        } catch (error) {
+            console.error('Error al enviar los datos:', error);
+            console.log(error);
+            alert('Ocurrió un error al agregar el producto');
+        }
         
-        // Esto deberia salir siempre y cuando la eliminacion sale bien
-        setSuccessMessageEliminar("Producto eliminado correctamente");
-        setIsPopupVisibleEliminar(false);
     };
 
     const calcularTiempoRestante = (fechaTermino) => {
@@ -177,7 +190,7 @@ const ProductoDetalle = () => {
             <div className="detalle-container">
                 <div className="image-container">
                     {/* Cambiar cuando esté listo, a producto.imagen */}
-                    <img src="https://media.istockphoto.com/id/931643150/vector/picture-icon.jpg?s=612x612&w=0&k=20&c=St-gpRn58eIa8EDAHpn_yO4CZZAnGD6wKpln9l3Z3Ok=" alt={producto.nombre} className="imagen-producto" />
+                    <img src={imagenPrincipal} alt={producto.nombre} className="imagen-producto" />
                 
                     <div className="imagenes-adicionales-mostrar">
                         
@@ -275,7 +288,10 @@ const ProductoDetalle = () => {
             )}
 
             {successMessageEliminar && (
-                <div className="success-popup" onClick={() => setSuccessMessageEliminar(false)}>
+                <div className="success-popup" onClick={() => {
+                    setSuccessMessageEliminar(false);
+                    navigate('/catalogo');
+                }}>
                     <div className="success-content">
                         <span className="icon">✔️</span> Producto Eliminado correctamente
                     </div>

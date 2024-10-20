@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import './catalogo.css';
 import { BASE_URL } from '../../services/constants';
 import axios from 'axios';
@@ -12,14 +12,17 @@ const AgregarProductoPopup = ({ onClose }) => {
 
     const [mensajeExito, setMensajeExito] = useState(false);
 
-    const imagenPortadaRef = useRef(null);
-    const imagenesAdicionalesRef = useRef(null);
-
     // Se agregan hasta 5 imagenes addicionales sin incluir portada
-    const handleAgregarImagen = (event) => {
+    const handleAgregarImagen = () => {
         if (imagenesAdicionales.length < 5) {
-            setImagenesAdicionales([...imagenesAdicionales, event.target.files[0]]);
+            setImagenesAdicionales([...imagenesAdicionales, '']);
         }
+    };
+
+    const handleCambiarImagenAdicional = (index, url) => {
+        const nuevasImagenes = [...imagenesAdicionales];
+        nuevasImagenes[index] = url;
+        setImagenesAdicionales(nuevasImagenes);
     };
 
     const validarFormulario = () => {
@@ -41,37 +44,29 @@ const AgregarProductoPopup = ({ onClose }) => {
         setFechaTermino('');
         setImagenPortada(null);
         setImagenesAdicionales([]);
-
-        // resetea los campos para subir imagenes
-        if (imagenPortadaRef.current) {
-            imagenPortadaRef.current.value = '';
-        }
-        if (imagenesAdicionalesRef.current) {
-            imagenesAdicionalesRef.current.value = '';
-        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (validarFormulario()) {
-            // Creando un FormData para poder enviar la imagen junto con los datos
-            const formData = new FormData();
-            formData.append('name', nombreProducto);
-            formData.append('price', precioBase);
-            formData.append('end_date', fechaTermino);
-            formData.append('image_url', "https://png.pngtree.com/png-clipart/20200224/original/pngtree-question-mark-icon-for-your-project-png-image_5214036.jpg"); // Aquí suponemos que almacenarás la URL de la imagen directamente
+            
+            const newFormData = {
+                name: nombreProducto,
+                price: precioBase,
+                end_date: fechaTermino,
+                image_url: imagenPortada // Asigna la URL de la imagen
+            };
 
             // Esto para imagenes adicionales
             /*
             imagenesAdicionales.forEach((imagen, index) => {
-                formData.append(`additional_image_${index}`, imagen);
+                newFormData.append(`additional_image_${index}`, imagen);
             });
             */
 
-
             try {
-                await axios.post(`${BASE_URL}/products`, formData, {withCredentials: true});
+                await axios.post(`${BASE_URL}/products`, newFormData, {withCredentials: true});
                 // Mostrar el mensaje de exito y se borra el formulario
                 setMensajeExito(true);
                 limpiarCampos();
@@ -80,9 +75,11 @@ const AgregarProductoPopup = ({ onClose }) => {
                 setTimeout(() => {
                     setMensajeExito(false);
                     onClose();
+                    window.location.reload();
                 }, 3000);
             } catch (error) {
                 console.error('Error al enviar los datos:', error);
+                console.log(error);
                 alert('Ocurrió un error al agregar el producto');
             }
         }
@@ -120,33 +117,61 @@ const AgregarProductoPopup = ({ onClose }) => {
                             required
                         />
 
-                        <label>Imagen de Portada:</label>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            ref={imagenPortadaRef}
-                            onChange={(e) => setImagenPortada(e.target.files[0])}
-                            required
-                        />
+                        <div className="contenedor-portada">
+                            <label>URL de Imagen de Portada:</label>
+                            <input
+                                type="text"
+                                value={imagenPortada}
+                                onChange={(e) => setImagenPortada(e.target.value)}
+                                placeholder="URL de la imagen de portada"
+                                required
+                            />
+
+                            {imagenPortada && (
+                                <div className="contenedor-miniatura">
+                                    <img src={imagenPortada} alt="Portada" className="miniatura-portada" />
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     <div className="agregar-form-col imagenes-adicionales">
                         <label>Imágenes Adicionales (máximo 5):</label>
                         {imagenesAdicionales.map((imagen, index) => (
                             <div key={index} className="agregar-imagen-adicional">
-                                <p>{imagen.name}</p>
-                                <button type="button" className="agregar-boton-eliminar" onClick={() => handleEliminarImagen(index)}>Eliminar</button>
+                                <input
+                                    type="text"
+                                    className="input-imagen-adicional"
+                                    value={imagen}
+                                    onChange={(e) => handleCambiarImagenAdicional(index, e.target.value)}
+                                    placeholder="URL de la imagen"
+                                />
+                                {imagen && (
+                                    <img
+                                        src={imagen}
+                                        alt={`Imagen adicional ${index + 1}`}
+                                        className="miniatura-imagen"
+                                    />
+                                )}
+                                <button
+                                    type="button"
+                                    className="agregar-boton-eliminar"
+                                    onClick={() => handleEliminarImagen(index)}
+                                >
+                                    Eliminar
+                                </button>
                             </div>
                         ))}
 
                         {imagenesAdicionales.length < 5 && (
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleAgregarImagen}
-                                ref={imagenesAdicionalesRef}
+                            <button
+                                type="button"
+                                onClick={handleAgregarImagen}
+                                className='agregar-boton-agregar'
                                 /* Imagenes adicionales son opcional de agregar */
-                            />
+                            >
+                                Agregar Imagen adicional
+                            </button>
                         )}
                     </div>
 
@@ -160,7 +185,10 @@ const AgregarProductoPopup = ({ onClose }) => {
                 </form>            
                 {/* Popup de éxito */}
                 {mensajeExito && (
-                    <div className="success-popup" onClick={() => setMensajeExito(false)}>
+                    <div className="success-popup" onClick={() => {
+                        setMensajeExito(false);
+                        window.location.reload();
+                    }}>
                     <div className="success-content">
                         <span className="icon">✔️</span> Producto agregado exitosamente
                     </div>

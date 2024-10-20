@@ -24,10 +24,8 @@
     border: 1px solid #ccc;
     padding: 13px;
     display: flex;
-    width: 100%; /* 400px anteriormente*/
-    height: 50%;
-    min-height: 220px;
-    max-width: 430px;
+    height: 230px;
+    width: 420px;
     /*max-width: 400px;*/
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -47,7 +45,8 @@
 
 .catalogo-imagen-producto {
     width: 200px;
-    height: auto;
+    height: 200px;
+    margin-top: 15px;
     margin-right: 16px;
 }
 
@@ -173,8 +172,53 @@
 }
 
 .agregar-form-col label {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     display: block;
+}
+
+.agregar-form-col input,
+.agregar-form-col select {
+    margin-bottom: 25px;
+    padding: 2px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.miniatura-imagen {
+    max-width: 40px;
+    max-height: 40px;
+    object-fit: cover;
+}
+
+.contenedor-portada {
+    display: flex;
+    flex-direction: column;
+}
+
+.contenedor-miniatura {
+    display: flex;
+    justify-content: center;
+}
+
+.miniatura-portada {
+    transform: translateY(-15px);
+    max-width: 60px;
+    max-height: 70px;
+    object-fit: cover;
+}
+
+.input-imagen-adicional {
+    max-width: 50%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.input-imagen-adicional:focus {
+    border-color: #007bff;
+    outline: none;
 }
 
 .imagenes-adicionales {
@@ -247,9 +291,11 @@
     background-color: #fd0000;
     color: white;
     border: none;
+    border-radius: 15px;
     padding: 5px;
     cursor: pointer;
     width: 20%;
+    min-width: 75px;
     margin-top: 20px;
     transition: background-color 0.3s;
 }

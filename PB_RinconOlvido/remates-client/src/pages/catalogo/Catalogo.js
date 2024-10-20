@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const Catalogo = () => {
     const [productos, setProductos] = useState([]);
-    const [isAdmin, setIsAdmin] = useState(false); // esto simula que el usuario es admin, se debe implementar esta logica en backend por seguridad
+    const [isAdmin, setIsAdmin] = useState(false);
     const [productoEliminar, setProductoEliminar] = useState(null);
     const [mostrarPopup, setMostrarPopup] = useState(false);
     const [filtroNombre, setFiltroNombre] = useState('');
@@ -150,7 +150,7 @@ const Catalogo = () => {
                     {productosFiltrados.map(producto => (
                         <Link key={producto.id} to={`/producto/${producto.id}`} className="card-link">
                             <div className="catalogo-card">
-                                <img src={"no-img.jpg"} alt={producto.name} className="catalogo-imagen-producto" />
+                                <img src={producto.image_url} alt={producto.name} className="catalogo-imagen-producto" />
                                 <div className="catalogo-info">
                                     <h3>{producto.name}</h3>
                                     {producto.Bids.length === 0 ? (

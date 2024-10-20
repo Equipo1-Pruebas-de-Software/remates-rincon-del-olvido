@@ -1,4 +1,4 @@
-import ProductController from "./ProductsController.js";
+import ProductController from "./productsController.js";
 import BidController from "./bidsController.js";
 import AuthController from "./authController.js";
 import authMiddleware from "../utils/authMiddleware.js";

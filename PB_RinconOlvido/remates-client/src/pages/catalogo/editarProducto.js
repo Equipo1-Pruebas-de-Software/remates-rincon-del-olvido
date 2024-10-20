@@ -1,18 +1,18 @@
-import { useState, useRef, useEffect} from 'react';
+import { useState, useEffect} from 'react';
+import { useParams } from 'react-router-dom';
 import './catalogo.css';
+import { BASE_URL } from '../../services/constants';
+import axios from 'axios';
 
 const EditarProductoPopup = ({ onClose, producto}) => {
+    const { id } = useParams();
     const [nombreProducto, setNombreProducto] = useState('');
     const [precioBase, setPrecioBase] = useState('');
     const [fechaTermino, setFechaTermino] = useState('');
-    const [rareza, setRareza] = useState('');
     const [imagenPortada, setImagenPortada] = useState(null);
     const [imagenesAdicionales, setImagenesAdicionales] = useState([]);
 
     const [mensajeExito, setMensajeExito] = useState(false);
-
-    const imagenPortadaRef = useRef(null);
-    const imagenesAdicionalesRef = useRef(null);
 
     // Se cargan los datos del producto a editar
     useEffect(() => {
@@ -20,21 +20,20 @@ const EditarProductoPopup = ({ onClose, producto}) => {
             setNombreProducto(producto.nombre);
             setPrecioBase(producto.precio);
             setFechaTermino(producto.fecha_termino);
-            setRareza(producto.rareza);
             setImagenPortada(producto.imagen); // la imagen debe ser url, ojo
             //Las imagenes adicionales hay que agregarlas tambien para cargarlas
         }
     }, [producto]);
 
     // Se agregan hasta 5 imagenes addicionales sin incluir portada
-    const handleAgregarImagen = (event) => {
+    const handleAgregarImagen = () => {
         if (imagenesAdicionales.length < 5) {
-            setImagenesAdicionales([...imagenesAdicionales, event.target.files[0]]);
+            setImagenesAdicionales([...imagenesAdicionales, '']);
         }
     };
 
     const validarFormulario = () => {
-        if (!nombreProducto || !precioBase || !fechaTermino || !rareza || !imagenPortada) {
+        if (!nombreProducto || !precioBase || !fechaTermino || !imagenPortada) {
             alert('Todos los campos obligatorios deben ser llenados.');
             return false;
         }
@@ -46,19 +45,40 @@ const EditarProductoPopup = ({ onClose, producto}) => {
         setImagenesAdicionales(nuevasImagenes);
     };
 
-    const handleSubmit = (e) => {
+    const handleCambiarImagenAdicional = (index, url) => {
+        const nuevasImagenes = [...imagenesAdicionales];
+        nuevasImagenes[index] = url;
+        setImagenesAdicionales(nuevasImagenes);
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (validarFormulario()) { 
-            // Si los campos tienen contenido, se muestra mensaje de exito
-            setMensajeExito(true);
+        if (validarFormulario()) {
 
-            // Oculta el popup despues de un tiempo
-            setTimeout(() => {
-                setMensajeExito(false);
-            }, 10000);  // Espera 10 segundos antes de cerrar el popup
+            const newFormData = {
+                name: nombreProducto,
+                price: precioBase,
+                end_date: fechaTermino,
+                image_url: imagenPortada // Asigna la URL de la imagen
+            };
 
-            //Deberia ir aqui la logica backend de base de datos
+            try {
+                await axios.put(`${BASE_URL}/products/${id}`, newFormData, {withCredentials: true});
+                // Mostrar el mensaje de exito y se borra el formulario
+                setMensajeExito(true);
+    
+                // Ocultar el popup despues de un tiempo
+                setTimeout(() => {
+                    setMensajeExito(false);
+                    onClose();
+                    window.location.reload();
+                }, 2000);
+            } catch (error) {
+                console.error('Error al enviar los datos de edicion:', error);
+                console.log(error);
+                alert('Error al editar el producto');
+            }
         }
     };
 
@@ -94,42 +114,61 @@ const EditarProductoPopup = ({ onClose, producto}) => {
                             required
                         />
 
-                        <label>Rareza:</label>
-                        <select value={rareza} onChange={(e) => setRareza(e.target.value)} required>
-                            <option value="">Seleccionar rareza</option>
-                            <option value="comun">Común</option>
-                            <option value="poco comun">Poco común</option>
-                            <option value="raro">Raro</option>
-                            <option value="extravagante">Extravagante</option>
-                        </select>
+                        <div className="contenedor-portada">
+                            <label>URL de Imagen de Portada:</label>
+                            <input
+                                type="text"
+                                value={imagenPortada}
+                                onChange={(e) => setImagenPortada(e.target.value)}
+                                placeholder="URL de la imagen de portada"
+                                required
+                            />
 
-                        <label>Imagen de Portada:</label>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            ref={imagenPortadaRef}
-                            onChange={(e) => setImagenPortada(e.target.files[0])}
-                            required
-                        />
+                            {imagenPortada && (
+                                <div className="contenedor-miniatura">
+                                    <img src={imagenPortada} alt="Portada" className="miniatura-portada" />
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     <div className="agregar-form-col imagenes-adicionales">
                         <label>Imágenes Adicionales (máximo 5):</label>
                         {imagenesAdicionales.map((imagen, index) => (
                             <div key={index} className="agregar-imagen-adicional">
-                                <p>{imagen.name}</p>
-                                <button type="button" className="agregar-boton-eliminar" onClick={() => handleEliminarImagen(index)}>Eliminar</button>
+                                <input
+                                    type="text"
+                                    className="input-imagen-adicional"
+                                    value={imagen}
+                                    onChange={(e) => handleCambiarImagenAdicional(index, e.target.value)}
+                                    placeholder="URL de la imagen"
+                                />
+                                {imagen && (
+                                    <img
+                                        src={imagen}
+                                        alt={`Imagen adicional ${index + 1}`}
+                                        className="miniatura-imagen"
+                                    />
+                                )}
+                                <button
+                                    type="button"
+                                    className="agregar-boton-eliminar"
+                                    onClick={() => handleEliminarImagen(index)}
+                                >
+                                    Eliminar
+                                </button>
                             </div>
                         ))}
 
                         {imagenesAdicionales.length < 5 && (
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleAgregarImagen}
-                                ref={imagenesAdicionalesRef}
+                            <button
+                                type="button"
+                                onClick={handleAgregarImagen}
+                                className='agregar-boton-agregar'
                                 /* Imagenes adicionales son opcional de agregar */
-                            />
+                            >
+                                Agregar Imagen adicional
+                            </button>
                         )}
                     </div>
 
@@ -143,7 +182,11 @@ const EditarProductoPopup = ({ onClose, producto}) => {
                 </form>            
                 {/* Popup de éxito */}
                 {mensajeExito && (
-                    <div className="success-popup" onClick={() => setMensajeExito(false)}>
+                    <div className="success-popup" onClick={() => {
+                        setMensajeExito(false);
+                        onClose();
+                        window.location.reload();
+                        }}>
                     <div className="success-content">
                         <span className="icon">✔️</span> Producto editado exitosamente
                     </div>
