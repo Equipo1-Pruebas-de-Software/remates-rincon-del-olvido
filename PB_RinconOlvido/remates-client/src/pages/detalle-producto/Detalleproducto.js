@@ -21,7 +21,7 @@ const ProductoDetalle = () => {
 
     const [imagenPrincipal, setImagenPrincipal] = useState(producto?.imagen); // Imagen de portada
 
-    const [isAdmin] = useState(true); // esto simula que el usuario es admin, se debe implementar esta logica en backend por seguridad
+    const [isAdmin, setIsAdmin] = useState(false);
 
     //Popup de eliminacion
     const [isPopupVisibleEliminar, setIsPopupVisibleEliminar] = useState(false);
@@ -58,6 +58,24 @@ const ProductoDetalle = () => {
 
         fetchProducto();
     }, [id]);
+
+    useEffect(() => {
+        const fetchUserRole = async () => {
+            try {
+                const response = await axios.get(`${BASE_URL}/auth`, { withCredentials: true });
+                if (response.data.status === 'success') {
+                    const { user_role } = response.data.data;
+                    if (user_role === 'admin') {
+                        setIsAdmin(true);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching user role:', error);
+            }
+        };
+    
+        fetchUserRole();
+    }, []);
 
     useEffect(() => {
         if (producto) {
@@ -106,6 +124,7 @@ const ProductoDetalle = () => {
 
     const cerrarEditar = () => {
         setMostrarEditar(false);
+        window.location.reload();
     };
 
     //Popup de eliminacion
@@ -119,10 +138,22 @@ const ProductoDetalle = () => {
     
     const eliminarProducto = async () => {
         // Aqui va la logica backend de eliminacion del producto
+
+        try {
+            await axios.delete(`${BASE_URL}/products/${id}`, {withCredentials: true});
+            // Mostrar el mensaje de exito y se borra el formulario
+            setSuccessMessageEliminar("Producto eliminado correctamente");
+            setIsPopupVisibleEliminar(false);
+            //Mandar a catalogo
+            setTimeout(() => {
+                navigate('/catalogo');
+            }, 2000); // lo manda despues de 2s
+        } catch (error) {
+            console.error('Error al enviar los datos:', error);
+            console.log(error);
+            alert('Ocurrió un error al agregar el producto');
+        }
         
-        // Esto deberia salir siempre y cuando la eliminacion sale bien
-        setSuccessMessageEliminar("Producto eliminado correctamente");
-        setIsPopupVisibleEliminar(false);
     };
 
     const calcularTiempoRestante = (fechaTermino) => {
@@ -159,7 +190,7 @@ const ProductoDetalle = () => {
             <div className="detalle-container">
                 <div className="image-container">
                     {/* Cambiar cuando esté listo, a producto.imagen */}
-                    <img src="https://media.istockphoto.com/id/931643150/vector/picture-icon.jpg?s=612x612&w=0&k=20&c=St-gpRn58eIa8EDAHpn_yO4CZZAnGD6wKpln9l3Z3Ok=" alt={producto.nombre} className="imagen-producto" />
+                    <img src={imagenPrincipal} alt={producto.nombre} className="imagen-producto" />
                 
                     <div className="imagenes-adicionales-mostrar">
                         
@@ -208,12 +239,14 @@ const ProductoDetalle = () => {
                             ))}
                         </select>
                     </div>
-                    {/* {isAdmin && (
+
+                    {isAdmin && (
                             <button onClick={abrirEditar} className="boton-agregar">Editar producto</button>
                     )}
                     {isAdmin && (
                             <button onClick={abrirPopupEliminar} className="boton-editar-eliminar">Eliminar producto</button>
-                    )} */}
+                    )}
+
                 {/* cerrar PopUp */}
                 {mostrarEditar && <EditarProducto onClose={cerrarEditar} producto={producto}/>}
                 </div>
@@ -255,7 +288,10 @@ const ProductoDetalle = () => {
             )}
 
             {successMessageEliminar && (
-                <div className="success-popup" onClick={() => setSuccessMessageEliminar(false)}>
+                <div className="success-popup" onClick={() => {
+                    setSuccessMessageEliminar(false);
+                    navigate('/catalogo');
+                }}>
                     <div className="success-content">
                         <span className="icon">✔️</span> Producto Eliminado correctamente
                     </div>

@@ -1,0 +1,77 @@
+.login-container-admin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #050a11;
+}
+
+.login-card-admin {
+    background-color: #1f2c38;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgb(50, 55, 58);
+    padding: 50px;
+    width: 350px;
+    max-height: 220px;
+    text-align: center;
+    color: #93ffa1;
+}
+
+.login-card-admin h2 {
+    margin-bottom: 20px;
+}
+
+.login-card-admin input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.loginto-button-admin {
+    background-color: #599876;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.loginto-button-admin:hover {
+    background-color: #477a5f;
+}
+
+/*Aqui va el titulo*/
+.login-titulo-admin {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2em;
+    color: #93ffa1;
+    background-color: transparent;
+    z-index: 10;
+    margin: 0;
+}
+
+.admin-log-admin {
+    font-size: 13px;
+    display: block;
+    color: #599876;
+    text-decoration: underline;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.admin-log-admin:hover {
+    color: #44745a;
+    text-decoration: underline;
+}

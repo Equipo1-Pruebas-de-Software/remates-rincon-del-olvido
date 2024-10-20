@@ -1,4 +1,4 @@
-import ProductController from "./ProductsController.js";
+import ProductController from "./productsController.js";
 import BidController from "./bidsController.js";
 import AuthController from "./authController.js";
 import authMiddleware from "../utils/authMiddleware.js";
@@ -26,4 +26,6 @@ export default (app) => {
     app.post('/register/admin', authInstance.adminRegister);
     app.post('/register/user', authMiddleware('admin') ,authInstance.userRegister);
     app.post('/auth', authInstance.auth);
+    app.get('/auth', authInstance.auth);
+
 }
