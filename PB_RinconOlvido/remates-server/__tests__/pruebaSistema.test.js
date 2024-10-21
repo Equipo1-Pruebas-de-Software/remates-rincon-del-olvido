@@ -91,7 +91,7 @@ describe('CU3: Realizar oferta en tiempo real', () => {
         const cookies = loginResponse.headers['set-cookie'];
         const productId = 999999;
 
-        const bidAmount = 200;a
+        const bidAmount = 200;
     
         const bidResponse = await request(app)
             .post(`/bids`)
