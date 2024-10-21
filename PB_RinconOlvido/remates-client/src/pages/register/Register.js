@@ -22,6 +22,8 @@ const Register = () => {
             await axios.post(`${BASE_URL}/register/user`, formData, { withCredentials: true });
             setFormData({ email: '', password: '' });
             //window.location.href = '/';
+            toast.success('Te has registrado exitosamente ✔️');
+            setFormData({ email: '', password: '' });
         } catch (error) {
             console.log(error);
             toast.error('Error con el registro');
@@ -36,8 +38,8 @@ const Register = () => {
                     <h2>Registro</h2>
                     <form onSubmit={handleSubmit}>
                         {/*<input type="text" name="username" placeholder="Nombre de Usuario" onChange={handleInputChange} required />*/}
-                        <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleInputChange} required />
-                        <input type="password" name="password" placeholder="Contraseña" onChange={handleInputChange} required />
+                        <input type="email" name="email" placeholder="Correo Electrónico" value={formData.email} onChange={handleInputChange} required />
+                        <input type="password" name="password" placeholder="Contraseña" value={formData.password} onChange={handleInputChange} required />
                         {/*<label htmlFor="photo">Subir foto (opcional):</label>
                         <input type="file" name="photo" onChange={(e) => setFormData({ ...formData, photo: e.target.files[0] })} />*/}
                         <button type="submit">Registrarse</button>
