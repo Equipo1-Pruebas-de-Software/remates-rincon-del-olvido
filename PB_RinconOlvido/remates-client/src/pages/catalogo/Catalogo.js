@@ -159,14 +159,14 @@ const Catalogo = () => {
                                     <h3>{producto.name}</h3>
                                     {producto.Bids.length === 0 ? (
                                         <>
-                                            <p><span>Puja Inicial: ${producto.price}</span></p>
+                                            <p ><span>Puja Inicial: ${producto.price}</span></p>
                                             <p style={{ color: 'blue' }}><strong>Sé el primero en pujar</strong></p>
                                         </>
                                     ) : (
                                         <p><span>Puja Actual: ${producto.Bids[0].bid}</span></p>
                                     )}
                                     <p><span>Termina:</span> {timeRemaining[producto.id]}</p>
-                                    <p style={{ fontSize: 'small', color: 'gray', fontStyle: 'italic' }}>
+                                    <p className="act_text">
                                         Última actualización: {ultimaActualizacion}
                                     </p>
                                 </div>

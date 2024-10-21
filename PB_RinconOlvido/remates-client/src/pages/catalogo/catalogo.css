@@ -13,9 +13,9 @@
     margin: 80px;
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3 columnas de igual tamaño */
-    align-items: center;
+    align-items: start;
     justify-items: center; /* Centra los productos dentro de su columna */
-    row-gap: 40px;
+    gap: 40px;
     margin-top: 60px; /* para que no lo tape el header */
     margin-right: 90px;
 }
@@ -52,12 +52,23 @@
 
 .catalogo-info {
     display: flex;
+    flex-grow: 1;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+}
+
+.catalogo-info > * {
+    margin: 10px; /* Elimina el margen de los elementos hijos */
 }
 
 .catalogo-info p span {
     font-weight: bold;
+}
+
+.act_text {
+    font-size: small;
+    font-style: italic;
+    color: gray;
 }
 
 /* Desde aqui es estilo de filtros (parte de catalogo) */
