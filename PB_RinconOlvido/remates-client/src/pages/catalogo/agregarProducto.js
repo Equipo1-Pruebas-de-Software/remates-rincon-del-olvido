@@ -9,6 +9,7 @@ const AgregarProductoPopup = ({ onClose }) => {
     const [fechaTermino, setFechaTermino] = useState('');
     const [imagenPortada, setImagenPortada] = useState(null);
     const [imagenesAdicionales, setImagenesAdicionales] = useState([]);
+    const [descripcion, setDescripcion] = useState('');
 
     const [mensajeExito, setMensajeExito] = useState(false);
 
@@ -26,7 +27,7 @@ const AgregarProductoPopup = ({ onClose }) => {
     };
 
     const validarFormulario = () => {
-        if (!nombreProducto || !precioBase || !fechaTermino || !imagenPortada) {
+        if (!nombreProducto || !precioBase || !fechaTermino || !imagenPortada || !descripcion) {
             alert('Todos los campos obligatorios deben ser llenados.');
             return false;
         }
@@ -44,6 +45,7 @@ const AgregarProductoPopup = ({ onClose }) => {
         setFechaTermino('');
         setImagenPortada(null);
         setImagenesAdicionales([]);
+        setDescripcion('');
     };
 
     const handleSubmit = async (e) => {
@@ -55,7 +57,8 @@ const AgregarProductoPopup = ({ onClose }) => {
                 name: nombreProducto,
                 price: precioBase,
                 end_date: fechaTermino,
-                image_url: imagenPortada // Asigna la URL de la imagen
+                image_url: imagenPortada, // Asigna la URL de la imagen
+                description: descripcion
             };
 
             // Esto para imagenes adicionales
@@ -136,6 +139,14 @@ const AgregarProductoPopup = ({ onClose }) => {
                     </div>
 
                     <div className="agregar-form-col imagenes-adicionales">
+
+                        <label>Descripción:</label>
+                            <textarea
+                                value={descripcion}
+                                onChange={(e) => setDescripcion(e.target.value)}
+                                required
+                        />
+
                         <label>Imágenes Adicionales (máximo 5):</label>
                         {imagenesAdicionales.map((imagen, index) => (
                             <div key={index} className="agregar-imagen-adicional">

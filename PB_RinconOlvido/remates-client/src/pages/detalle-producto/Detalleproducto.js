@@ -48,6 +48,7 @@ const ProductoDetalle = () => {
                         precio: parseFloat(productoData.price),
                         fecha_termino: productoData.end_date,
                         imagen: productoData.image_url,
+                        descripcion: productoData.description,
                     });
                     setImagenPrincipal(productoData.image_url);
                 }
@@ -218,27 +219,29 @@ const ProductoDetalle = () => {
                 </div>
                 <div className="info">
                     <h1>{producto.nombre}</h1>
-                    <p>Precio: ${producto.precio}</p>
+                    <p>Puja actual: ${producto.precio}</p>
                     <p>Termina: {tiempoRestante}</p>
 
-                    <div className="oferta-container">
-                        {/* Boton para nueva oferta */}
-                        <button 
-                        onClick={handleNuevaOfertaClick}
-                        //onClick={handleOfertarClick}
-                        //className={`boton-oferta ${!medioPagoSeleccionado ? 'disabled' : ''}`} //Para no permitir presionar sin medio de pago
-                        className="boton-oferta"
-                        >
-                            Hacer nueva oferta
-                        </button>
-                        {/* Dropdown para seleccionar medio de pago */}
-                        <select className="select-medio-pago" value={medioPagoSeleccionado} onChange={handleMedioPagoSeleccionado}>
-                            <option value="">Seleccionar Medio de Pago</option>
-                            {mediosPagoSimulados.map((medio, index) => (
-                                <option key={index} value={medio}>{medio}</option>
-                            ))}
-                        </select>
-                    </div>
+                    {!isAdmin && (
+                        <div className="oferta-container">
+                            {/* Boton para nueva oferta */}
+                            <button 
+                            onClick={handleNuevaOfertaClick}
+                            //onClick={handleOfertarClick}
+                            //className={`boton-oferta ${!medioPagoSeleccionado ? 'disabled' : ''}`} //Para no permitir presionar sin medio de pago
+                            className="boton-oferta"
+                            >
+                                Hacer nueva oferta
+                            </button>
+                            {/* Dropdown para seleccionar medio de pago */}
+                            <select className="select-medio-pago" value={medioPagoSeleccionado} onChange={handleMedioPagoSeleccionado}>
+                                <option value="">Seleccionar Medio de Pago</option>
+                                {mediosPagoSimulados.map((medio, index) => (
+                                    <option key={index} value={medio}>{medio}</option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
 
                     {isAdmin && (
                             <button onClick={abrirEditar} className="boton-agregar">Editar producto</button>
@@ -255,7 +258,7 @@ const ProductoDetalle = () => {
                 <div className="popup">
                     <div className="popup-content">
                         <h2>Oferta para: {producto.nombre}</h2>
-                        <p>Precio actual: ${producto.precio}</p>
+                        <p>Puja actual: ${producto.precio}</p>
                         <input
                             type="number"
                             value={nuevaOferta}
@@ -318,7 +321,7 @@ const ProductoDetalle = () => {
             <div className="desc-container">
                 <div className='desc'>
                     <h2>Descripción del Producto</h2>
-                    <p>Aquí irá la descripción del producto.</p>
+                    <p>{producto.descripcion}</p>
                 </div>
             </div>
         </div>

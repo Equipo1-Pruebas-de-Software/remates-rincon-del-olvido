@@ -11,16 +11,19 @@ const EditarProductoPopup = ({ onClose, producto}) => {
     const [fechaTermino, setFechaTermino] = useState('');
     const [imagenPortada, setImagenPortada] = useState(null);
     const [imagenesAdicionales, setImagenesAdicionales] = useState([]);
+    const [descripcion, setDescripcion] = useState('');
 
     const [mensajeExito, setMensajeExito] = useState(false);
 
     // Se cargan los datos del producto a editar
     useEffect(() => {
         if (producto) {
+            console.log(producto);
             setNombreProducto(producto.nombre);
             setPrecioBase(producto.precio);
             setFechaTermino(producto.fecha_termino);
             setImagenPortada(producto.imagen); // la imagen debe ser url, ojo
+            setDescripcion(producto.descripcion);
             //Las imagenes adicionales hay que agregarlas tambien para cargarlas
         }
     }, [producto]);
@@ -33,7 +36,7 @@ const EditarProductoPopup = ({ onClose, producto}) => {
     };
 
     const validarFormulario = () => {
-        if (!nombreProducto || !precioBase || !fechaTermino || !imagenPortada) {
+        if (!nombreProducto || !precioBase || !fechaTermino || !imagenPortada || !descripcion) {
             alert('Todos los campos obligatorios deben ser llenados.');
             return false;
         }
@@ -60,15 +63,14 @@ const EditarProductoPopup = ({ onClose, producto}) => {
                 name: nombreProducto,
                 price: precioBase,
                 end_date: fechaTermino,
-                image_url: imagenPortada // Asigna la URL de la imagen
+                image_url: imagenPortada,
+                description: descripcion
             };
 
             try {
                 await axios.put(`${BASE_URL}/products/${id}`, newFormData, {withCredentials: true});
-                // Mostrar el mensaje de exito y se borra el formulario
                 setMensajeExito(true);
     
-                // Ocultar el popup despues de un tiempo
                 setTimeout(() => {
                     setMensajeExito(false);
                     onClose();
@@ -133,6 +135,14 @@ const EditarProductoPopup = ({ onClose, producto}) => {
                     </div>
 
                     <div className="agregar-form-col imagenes-adicionales">
+
+                        <label>Descripción:</label>
+                            <textarea
+                                value={descripcion}
+                                onChange={(e) => setDescripcion(e.target.value)}
+                                required
+                        />
+
                         <label>Imágenes Adicionales (máximo 5):</label>
                         {imagenesAdicionales.map((imagen, index) => (
                             <div key={index} className="agregar-imagen-adicional">
