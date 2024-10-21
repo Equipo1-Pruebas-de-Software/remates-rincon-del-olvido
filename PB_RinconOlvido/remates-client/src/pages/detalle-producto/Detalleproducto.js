@@ -58,6 +58,8 @@ const ProductoDetalle = () => {
         };
 
         fetchProducto();
+        const interval = setInterval(fetchProducto, 5000);
+        return () => clearInterval(interval);
     }, [id]);
 
     useEffect(() => {
@@ -97,7 +99,7 @@ const ProductoDetalle = () => {
     };
 
     // Funcion para agregar el nuevo precio oferta
-    const handleEnviarOferta = () => {
+    const handleEnviarOferta = async () => {
         // Verifica si el campo esta vacio
         if (!nuevaOferta || isNaN(parseFloat(nuevaOferta))) {
             alert('Por favor, ingresa una oferta valida');
@@ -108,10 +110,11 @@ const ProductoDetalle = () => {
             alert('La oferta debe ser mayor al precio actual');
         } else {
             setMostrarPopup(false);
+            await axios.post(`${BASE_URL}/bids`, { bid: parseFloat(nuevaOferta), productId: id }, { withCredentials: true });
             setMensajeExito(true);
             setTimeout(() => {
-                setMensajeExito(false);
-            }, 10000);
+                window.location.reload();
+            }, 2000);
             //Aqui deberia ir la logica del backend y bd
         }
     };

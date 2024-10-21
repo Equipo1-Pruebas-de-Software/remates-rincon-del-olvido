@@ -40,9 +40,14 @@ export default class ProductController{
         }
     }
 
-    async getProductbyId(req, res){
+    async getProductbyId(req, res) {
         try {
-            const product = await Product.findByPk(req.params.id);
+            const product = await Product.findByPk(req.params.id, {
+                include: [{
+                    model: Bid,
+                    attributes: ['bid']
+                }]
+            });
             if (!product) {
                 return res.status(404).json({
                     status: 'error',
@@ -50,12 +55,17 @@ export default class ProductController{
                     message: 'Product not found',
                 });
             }
-    
+
+            const highestBid = product.Bids.length > 0 ? Math.max(...product.Bids.map(bid => parseFloat(bid.bid))) : null;
             const productStandard = {
                 ...product.toJSON(),
-                price: parseFloat(product.price),
+                price: highestBid !== null ? highestBid : parseFloat(product.price),
+                Bids: product.Bids.map(bid => ({
+                    ...bid.toJSON(),
+                    bid: parseFloat(bid.bid)
+                }))
             };
-    
+
             res.status(200).json({
                 status: 'success',
                 status_code: 200,
