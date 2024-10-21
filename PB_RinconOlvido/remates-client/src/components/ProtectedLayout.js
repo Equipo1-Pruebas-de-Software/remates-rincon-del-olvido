@@ -27,6 +27,7 @@ const Layout = () => {
 
     authenticate();
   }, [navigate]);
+  
 
   return (
     <>

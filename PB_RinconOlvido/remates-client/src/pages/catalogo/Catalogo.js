@@ -16,6 +16,7 @@ const Catalogo = () => {
     const [productosFiltrados, setProductosFiltrados] = useState([]);
     const [fechaFiltro, setFechaFiltro] = useState('');
     const [timeRemaining, setTimeRemaining] = useState({});
+    const [ultimaActualizacion, setUltimaActualizacion] = useState('');
 
     useEffect(() => {
         const fetchProductos = async () => {
@@ -24,6 +25,7 @@ const Catalogo = () => {
                 if (response.data.status === 'success') {
                     setProductos(response.data.data);
                     setProductosFiltrados(response.data.data);
+                    setUltimaActualizacion(new Date().toLocaleString('es-CL', { timeZone: 'America/Santiago' }));
                 }
             } catch (error) {
                 console.error('Error fetching products:', error);
@@ -31,6 +33,8 @@ const Catalogo = () => {
         };
 
         fetchProductos();
+        const interval = setInterval(fetchProductos, 5000);
+        return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
@@ -155,13 +159,16 @@ const Catalogo = () => {
                                     <h3>{producto.name}</h3>
                                     {producto.Bids.length === 0 ? (
                                         <>
-                                            <p><span>Precio Inicial: ${producto.price}</span></p>
+                                            <p><span>Puja Inicial: ${producto.price}</span></p>
                                             <p style={{ color: 'blue' }}><strong>Sé el primero en pujar</strong></p>
                                         </>
                                     ) : (
-                                        <p><span>Precio Actual: ${producto.Bids[0].bid}</span></p>
+                                        <p><span>Puja Actual: ${producto.Bids[0].bid}</span></p>
                                     )}
                                     <p><span>Termina:</span> {timeRemaining[producto.id]}</p>
+                                    <p style={{ fontSize: 'small', color: 'gray', fontStyle: 'italic' }}>
+                                        Última actualización: {ultimaActualizacion}
+                                    </p>
                                 </div>
                             </div>
                         </Link>
