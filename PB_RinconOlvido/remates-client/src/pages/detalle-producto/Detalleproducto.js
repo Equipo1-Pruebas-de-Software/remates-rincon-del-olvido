@@ -223,21 +223,25 @@ const ProductoDetalle = () => {
 
                     <div className="oferta-container">
                         {/* Boton para nueva oferta */}
-                        <button 
-                        onClick={handleNuevaOfertaClick}
-                        //onClick={handleOfertarClick}
-                        //className={`boton-oferta ${!medioPagoSeleccionado ? 'disabled' : ''}`} //Para no permitir presionar sin medio de pago
-                        className="boton-oferta"
-                        >
-                            Hacer nueva oferta
-                        </button>
-                        {/* Dropdown para seleccionar medio de pago */}
-                        <select className="select-medio-pago" value={medioPagoSeleccionado} onChange={handleMedioPagoSeleccionado}>
+                        {!isAdmin && (
+                            <button 
+                            onClick={handleNuevaOfertaClick}
+                            //onClick={handleOfertarClick}
+                            //className={`boton-oferta ${!medioPagoSeleccionado ? 'disabled' : ''}`} //Para no permitir presionar sin medio de pago
+                            className="boton-oferta"
+                            >
+                                Hacer nueva oferta
+                            </button>
+                        )}
+
+                        {!isAdmin && (
+                            <select className="select-medio-pago" value={medioPagoSeleccionado} onChange={handleMedioPagoSeleccionado}>
                             <option value="">Seleccionar Medio de Pago</option>
-                            {mediosPagoSimulados.map((medio, index) => (
-                                <option key={index} value={medio}>{medio}</option>
-                            ))}
-                        </select>
+                                {mediosPagoSimulados.map((medio, index) => (
+                                    <option key={index} value={medio}>{medio}</option>
+                                ))}
+                            </select>
+                        )}
                     </div>
 
                     {isAdmin && (
