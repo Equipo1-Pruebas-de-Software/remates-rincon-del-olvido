@@ -1,4 +1,4 @@
-import ProductController from '../controllers/ProductsController.js';
+import ProductController from '../controllers/productsController';
 import Product from '../models/Products';
 import { Sequelize } from 'sequelize';
 import dotenv from "dotenv";
