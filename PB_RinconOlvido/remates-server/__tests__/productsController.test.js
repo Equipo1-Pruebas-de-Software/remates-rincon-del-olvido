@@ -60,6 +60,7 @@ describe('ProductController', () => {
                 price: 100000,
                 end_date: '2024-12-31T23:59:59.000Z',
                 image_url: 'https://s3.aws.bucketname.com/asd123',
+                description: 'Product description 1',
                 Bids: [{ bid: 5000, toJSON: function() { return { ...this }; } }],
                 toJSON: function() { return { ...this }; }
             },
@@ -69,6 +70,7 @@ describe('ProductController', () => {
                 price: 100000,
                 end_date: '2024-12-31T23:59:59.000Z',
                 image_url: 'https://s3.aws.bucketname.com/asd123',
+                description: 'Product description 2',
                 Bids: [{ toJSON: function() { return { ...this }; } }],
                 toJSON: function() { return { ...this }; }
             }
@@ -90,6 +92,7 @@ describe('ProductController', () => {
                     price: expect.any(Number),
                     end_date: expect.any(String),
                     image_url: expect.any(String),
+                    description: expect.any(String),
                     Bids: expect.any(Array),
                     auctionStatus: expect.any(String)
                 })
@@ -102,8 +105,10 @@ describe('ProductController', () => {
             id: 3, 
             name: 'Cocina 5000', 
             price: 100000, 
-            end_date: "2024-12-31T23:59:59.000Z", 
+            end_date: "2024-12-31T23:59:59.000Z",
+            description: 'Product description',
             image_url: "https://s3.aws.bucketname.com/asd123",
+            Bids: [{ bid: 5000, toJSON: function() { return { ...this }; } }],
             toJSON: function() { return { ...this }; }
         };
 
@@ -120,7 +125,8 @@ describe('ProductController', () => {
                 name: expect.any(String),
                 price: expect.any(Number),
                 end_date: expect.any(String),
-                image_url: expect.any(String)
+                image_url: expect.any(String),
+                description: expect.any(String)
             })
         }));
     });
