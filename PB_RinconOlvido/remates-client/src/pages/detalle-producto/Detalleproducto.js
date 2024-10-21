@@ -58,9 +58,11 @@ const ProductoDetalle = () => {
         };
 
         fetchProducto();
-        const interval = setInterval(fetchProducto, 5000);
-        return () => clearInterval(interval);
-    }, [id]);
+        if (!isAdmin){
+            const interval = setInterval(fetchProducto, 5000);
+            return () => clearInterval(interval);
+        }
+    }, [id, isAdmin]);
 
     useEffect(() => {
         const fetchUserRole = async () => {
