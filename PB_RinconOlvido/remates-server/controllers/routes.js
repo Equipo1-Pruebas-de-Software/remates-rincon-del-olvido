@@ -24,7 +24,7 @@ export default (app) => {
     app.post('/login/user', authInstance.userLogin);
     app.post('/login/admin', authInstance.adminLogin);
     app.post('/register/admin', authInstance.adminRegister);
-    app.post('/register/user', authMiddleware('admin') ,authInstance.userRegister);
+    app.post('/register/user', authMiddleware('any') ,authInstance.userRegister);
     app.post('/auth', authInstance.auth);
     app.get('/auth', authInstance.auth);
 
