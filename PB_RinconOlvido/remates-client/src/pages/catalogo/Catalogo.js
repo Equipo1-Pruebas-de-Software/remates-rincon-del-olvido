@@ -18,13 +18,28 @@ const Catalogo = () => {
     const [timeRemaining, setTimeRemaining] = useState({});
     const [ultimaActualizacion, setUltimaActualizacion] = useState('');
 
+    const aplicarFiltro = (productos) => {
+        let minPrecio = precioMin === '' ? 0 : parseFloat(precioMin);
+        let maxPrecio = precioMax === '' ? Math.max(...productos.map(p => parseFloat(p.price))) : parseFloat(precioMax);
+
+        const productosFiltrados = productos.filter(producto => {
+            const coincideNombre = producto.name.toLowerCase().includes(filtroNombre.toLowerCase());
+            const coincidePrecio = parseFloat(producto.price) >= minPrecio && parseFloat(producto.price) <= maxPrecio;
+            const coincideFecha = !fechaFiltro || new Date(producto.end_date).toLocaleDateString() === new Date(fechaFiltro).toLocaleDateString();
+
+            return coincideNombre && coincidePrecio && coincideFecha;
+        });
+
+        setProductosFiltrados(productosFiltrados);
+    };
+
     useEffect(() => {
         const fetchProductos = async () => {
             try {
                 const response = await axios.get(`${BASE_URL}/products`, { withCredentials: true });
                 if (response.data.status === 'success') {
                     setProductos(response.data.data);
-                    setProductosFiltrados(response.data.data);
+                    aplicarFiltro(response.data.data);
                     setUltimaActualizacion(new Date().toLocaleString('es-CL', { timeZone: 'America/Santiago' }));
                 }
             } catch (error) {
@@ -35,7 +50,7 @@ const Catalogo = () => {
         fetchProductos();
         const interval = setInterval(fetchProductos, 5000);
         return () => clearInterval(interval);
-    }, []);
+    }, [filtroNombre, precioMin, precioMax, fechaFiltro]);
 
     useEffect(() => {
         const fetchUserRole = async () => {
@@ -94,21 +109,6 @@ const Catalogo = () => {
         setMostrarPopup(false);
     };
 
-    const aplicarFiltro = () => {
-        let minPrecio = precioMin === '' ? 0 : parseFloat(precioMin);
-        let maxPrecio = precioMax === '' ? Math.max(...productos.map(p => parseFloat(p.price))) : parseFloat(precioMax);
-
-        const productosFiltrados = productos.filter(producto => {
-            const coincideNombre = producto.name.toLowerCase().includes(filtroNombre.toLowerCase());
-            const coincidePrecio = parseFloat(producto.price) >= minPrecio && parseFloat(producto.price) <= maxPrecio;
-            const coincideFecha = !fechaFiltro || new Date(producto.end_date).toLocaleDateString() === new Date(fechaFiltro).toLocaleDateString();
-
-            return coincideNombre && coincidePrecio && coincideFecha;
-        });
-
-        setProductosFiltrados(productosFiltrados);
-    };
-
     return (
         <div>
             <div className="catalogo-container">
@@ -147,7 +147,7 @@ const Catalogo = () => {
                                 onChange={(e) => setFechaFiltro(e.target.value)}
                             />
                         </div>
-                        <button className="boton-aplicar" onClick={aplicarFiltro}>Aplicar Filtro</button>
+                        <button className="boton-aplicar" onClick={() => aplicarFiltro(productos)}>Aplicar Filtro</button>
                         {isAdmin && (
                             <button onClick={abrirPopup} className="boton-agregar">Agregar un producto</button>
                         )}
