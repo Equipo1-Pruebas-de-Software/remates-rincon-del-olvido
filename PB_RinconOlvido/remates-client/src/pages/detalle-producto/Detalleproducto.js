@@ -22,6 +22,7 @@ const ProductoDetalle = () => {
     const [imagenPrincipal, setImagenPrincipal] = useState(producto?.imagen); // Imagen de portada
 
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isFinished, setIsFinished] = useState(false);
 
     //Popup de eliminacion
     const [isPopupVisibleEliminar, setIsPopupVisibleEliminar] = useState(false);
@@ -81,6 +82,25 @@ const ProductoDetalle = () => {
     
         fetchUserRole();
     }, []);
+
+    const calcularTiempoRestante = (fechaTermino) => {
+        const ahora = new Date();
+        const termino = new Date(fechaTermino);
+        const diferencia = termino - ahora;
+
+        if (diferencia <= 0) {
+            setIsFinished(true);
+            console.log(isFinished);
+            return "Finalizado";
+        }
+
+        const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+        const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+        return `${dias}d, ${horas}h, ${minutos}min, ${segundos}s`;
+    };
 
     useEffect(() => {
         if (producto) {
@@ -162,23 +182,6 @@ const ProductoDetalle = () => {
         
     };
 
-    const calcularTiempoRestante = (fechaTermino) => {
-        const ahora = new Date();
-        const termino = new Date(fechaTermino);
-        const diferencia = termino - ahora;
-
-        if (diferencia <= 0) {
-            return "Finalizado";
-        }
-
-        const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-        const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
-        const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
-
-        return `${dias}d, ${horas}h, ${minutos}min, ${segundos}s`;
-    };
-
     const handleMedioPagoSeleccionado = (e) => {
         setMedioPagoSeleccionado(e.target.value);
     };
@@ -233,8 +236,7 @@ const ProductoDetalle = () => {
                             <button 
                             onClick={handleNuevaOfertaClick}
                             //onClick={handleOfertarClick}
-                            //className={`boton-oferta ${!medioPagoSeleccionado ? 'disabled' : ''}`} //Para no permitir presionar sin medio de pago
-                            className="boton-oferta"
+                            className={`boton-oferta ${isFinished ? 'disabled' : ''}`} //Para no permitir presionar sin medio de pago
                             >
                                 Hacer nueva oferta
                             </button>

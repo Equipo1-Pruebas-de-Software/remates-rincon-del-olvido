@@ -266,6 +266,11 @@
     margin-top: 20px;
 }
 
+.boton-oferta.disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
 .select-medio-pago {
     padding: 10px;
     background-color: white;
