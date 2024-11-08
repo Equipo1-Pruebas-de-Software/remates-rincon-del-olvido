@@ -57,7 +57,7 @@ export default class AuthController{
                 { expiresIn: '24h' }
             );
 
-            res.cookie('auth', token, { httpOnly: true, secure: true });
+            res.cookie('auth', token, { httpOnly: true });
 
             res.status(200).json({
                 status: 'success',
@@ -107,7 +107,7 @@ export default class AuthController{
                 { expiresIn: '24h' }
             );
 
-            res.cookie('auth', token, { httpOnly: true, secure: true });
+            res.cookie('auth', token, { httpOnly: true });
 
             res.status(200).json({
                 status: 'success',
