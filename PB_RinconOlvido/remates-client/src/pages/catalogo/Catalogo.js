@@ -18,6 +18,10 @@ const Catalogo = () => {
     const [timeRemaining, setTimeRemaining] = useState({});
     const [ultimaActualizacion, setUltimaActualizacion] = useState('');
 
+    // Estado para la paginacion
+    const [paginaActual, setPaginaActual] = useState(1);
+    const productosPorPagina = 12; // Maximo productos por pag
+
     const aplicarFiltro = (productos) => {
         let minPrecio = precioMin === '' ? 0 : parseFloat(precioMin);
         let maxPrecio = precioMax === '' ? Math.max(...productos.map(p => parseFloat(p.price))) : parseFloat(precioMax);
@@ -109,6 +113,27 @@ const Catalogo = () => {
         setMostrarPopup(false);
     };
 
+
+    // Calcular los productos a mostrar para la pag actual
+    const indiceUltimoProducto = paginaActual * productosPorPagina;
+    const indicePrimerProducto = indiceUltimoProducto - productosPorPagina;
+
+    //Usa los filtros + paginacion
+    const productosVisibles = productosFiltrados.slice(indicePrimerProducto, indiceUltimoProducto);
+
+    // Funciones para cambiar de pag
+    const paginaSiguiente = () => {
+        if (paginaActual < Math.ceil(productosFiltrados.length / productosPorPagina)) {
+            setPaginaActual(paginaActual + 1);
+        }
+    };
+
+    const paginaAnterior = () => {
+        if (paginaActual > 1) {
+            setPaginaActual(paginaActual - 1);
+        }
+    };
+
     return (
         <div>
             <div className="catalogo-container">
@@ -155,7 +180,7 @@ const Catalogo = () => {
                 </div>
 
                 <div className="catalogo">
-                    {productosFiltrados.map(producto => (
+                    {productosVisibles.map(producto => (
                         <Link key={producto.id} to={`/producto/${producto.id}`} className="card-link">
                             <div className="catalogo-card">
                                 <img src={producto.image_url} alt={producto.name} className="catalogo-imagen-producto" />
@@ -178,6 +203,18 @@ const Catalogo = () => {
                         </Link>
                     ))}
                 </div>
+
+                {/* Paginación */}
+                <div className="paginacion">
+                    <button onClick={paginaAnterior} disabled={paginaActual === 1}>
+                        Anterior
+                    </button>
+                    <span>Página {paginaActual}</span>
+                    <button onClick={paginaSiguiente} disabled={paginaActual === Math.ceil(productosFiltrados.length / productosPorPagina)}>
+                        Siguiente
+                    </button>
+                </div>
+
                 {mostrarPopup && <AgregarProducto onClose={cerrarPopup} />}
             </div>
             {productoEliminar && (
