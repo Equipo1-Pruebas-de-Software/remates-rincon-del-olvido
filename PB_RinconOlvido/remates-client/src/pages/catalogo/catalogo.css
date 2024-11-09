@@ -20,17 +20,65 @@
     margin-right: 90px;
 }
 
-.catalogo-card {
-    border: 1px solid #ccc;
-    padding: 13px;
+/* css paginacion */
+
+.paginacion {
     display: flex;
-    height: 230px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left: 1110px;
+    z-index: 1;
+}
+
+.paginacion span {
+    white-space: nowrap;
+    margin: 0 10px;
+    font-size: 16px;
+}
+
+.paginacion button {
+    margin: 0 30px;
+    padding: 10px 25px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.paginacion button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.catalogo-card {
     width: 420px;
-    /*max-width: 400px;*/
+    padding: 13px;
+    height: 250px;
+    border: 1px solid #ccc;
+    display: flex;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border-radius: 15px;
     /* box-sizing: border-box */ /* Con esto de aqui las tarjetas se ven mas chiquitas, pero a mi parecer se ven raras*/
+}
+
+/* Cuando la pantalla es menor a 1790px, muestra solo 2 columnas */
+@media (max-width: 1790px) {
+    .catalogo {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .paginacion {
+        margin-left: 1000;
+    }
+}
+
+/* Cuando la pantalla es menor a 1311px, muestra solo 1 columna */
+@media (max-width: 1311px) {
+    .catalogo {
+        grid-template-columns: 1fr;
+    }
+    .paginacion {
+        margin-left: 780px;
+    }
 }
 
 .catalogo-card:hover {
