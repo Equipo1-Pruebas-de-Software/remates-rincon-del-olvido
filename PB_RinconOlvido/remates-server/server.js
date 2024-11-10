@@ -5,6 +5,7 @@ import routes from './controllers/routes.js';
 import initModels from './models/model.js';
 import "dotenv/config.js";
 import { initializeDatabase } from './database/database.js';
+import initCronJobs from './utils/cronjobs.js';
 
 async function createApp() {
     const app = express();
@@ -19,6 +20,7 @@ async function createApp() {
 
     await initializeDatabase();
     initModels();
+    initCronJobs();
 
     return app;
 }
