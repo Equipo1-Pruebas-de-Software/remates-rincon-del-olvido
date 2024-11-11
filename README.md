@@ -1,7 +1,9 @@
 # Remates: Rincón del Olvido
 ######
-## URL al video
+## URL al video E1
 https://www.youtube.com/watch?v=OJEKaVFXPM0&ab_channel=Basti%C3%A1nSalomon
+## URL al video E2
+https://youtu.be/F_bFTxb8VFI
 # Instalación del Proyecto
 
 Este proyecto es una aplicación web que utiliza Node.js en el backend y PostgreSQL como base de datos, con un frontend separado. Sigue estos pasos para configurar y ejecutar el proyecto localmente.
