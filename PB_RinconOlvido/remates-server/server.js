@@ -20,7 +20,9 @@ async function createApp() {
 
     await initializeDatabase();
     initModels();
-    initCronJobs();
+    if (process.env.NODE_ENV !== 'test') {
+        initCronJobs();
+    }
 
     return app;
 }
