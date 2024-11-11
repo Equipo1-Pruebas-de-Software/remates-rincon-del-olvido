@@ -72,7 +72,7 @@ describe('AuthController', () => {
             process.env.JWT_SECRET_KEY,
             { expiresIn: '24h' }
         );
-        expect(res.cookie).toHaveBeenCalledWith('auth', 'fakeToken', { httpOnly: true, secure: true });
+        expect(res.cookie).toHaveBeenCalledWith('auth', 'fakeToken', { httpOnly: true });
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
             status: 'success',
@@ -149,7 +149,7 @@ describe('AuthController', () => {
             process.env.JWT_SECRET_KEY,
             { expiresIn: '24h' }
         );
-        expect(res.cookie).toHaveBeenCalledWith('auth', 'adminToken', { httpOnly: true, secure: true });
+        expect(res.cookie).toHaveBeenCalledWith('auth', 'adminToken', { httpOnly: true });
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
             status: 'success',

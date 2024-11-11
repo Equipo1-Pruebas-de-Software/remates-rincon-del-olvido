@@ -128,3 +128,4 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+PB_RinconOlvido/remates-server/expired_products.txt
