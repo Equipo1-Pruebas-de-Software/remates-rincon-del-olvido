@@ -47,7 +47,7 @@ const CLIENT_URL = process.env.CLIENT_URL;
         await driver.wait(until.urlIs(`${CLIENT_URL}/catalogo`), 10000);
 
         // Encuentra el boton de agregar producto
-        let agregarField = await driver.findElement(By.className('boton-agregar'));
+        let agregarField = await driver.wait(until.elementLocated(By.className('boton-agregar')), 5000);
 
         // clic en el boton de agegar de catalogo
         await agregarField.click();
