@@ -35,7 +35,7 @@ const CLIENT_URL = process.env.CLIENT_URL;
         await sleep(1000);
 
         // Espera hasta que la página cambie de URL
-        await driver.wait(until.urlIs('http://localhost:3000/catalogo'), 10000);
+        await driver.wait(until.urlIs(`${CLIENT_URL}/catalogo`), 10000);
 
         await sleep(1000);
 
@@ -72,7 +72,7 @@ const CLIENT_URL = process.env.CLIENT_URL;
         let currentUrl = await driver.getCurrentUrl();
         console.log('URL actual:', currentUrl);
 
-        let expectedUrlPattern = /^http:\/\/localhost:3000\/producto\/\d+$/;
+        let expectedUrlPattern = new RegExp(`^${CLIENT_URL}/producto/\\d+$`);
         if (expectedUrlPattern.test(currentUrl)) {
             //Producto correcto
             let botonoferta = await driver.findElement(By.className('boton-oferta'));
@@ -102,7 +102,7 @@ const CLIENT_URL = process.env.CLIENT_URL;
             }
 
         } else {
-            throw new Error(`URL incorrecta: se esperaba una URL del tipo http://localhost:3000/producto/{id}, pero obtuvimos: ${currentUrl}`);
+            throw new Error(`URL incorrecta: se esperaba una URL del tipo ${CLIENT_URL}/producto/{id}, pero obtuvimos: ${currentUrl}`);
         }
 
     } catch (err) {
