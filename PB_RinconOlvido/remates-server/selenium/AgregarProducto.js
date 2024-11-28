@@ -1,8 +1,11 @@
 import { Builder, By, until, Browser } from 'selenium-webdriver';
 import chrome from 'selenium-webdriver/chrome.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // Función para pausar entre acciones
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const CLIENT_URL = process.env.CLIENT_URL;
 
 (async function agregarProducto() {
     const options = new chrome.Options();
@@ -12,7 +15,7 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     try {
         await driver.manage().window().maximize();
-        await driver.get('http://localhost:3000/');
+        await driver.get(CLIENT_URL);
         await sleep(1000);
 
         // Encuentra el botón "Ingresar como Administrador" usando su clase
