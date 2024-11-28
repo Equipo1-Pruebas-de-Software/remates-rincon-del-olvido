@@ -35,7 +35,7 @@ const CLIENT_URL = process.env.CLIENT_URL;
         await sleep(1000);
 
         // Espera hasta que la página cambie de URL
-        await driver.wait(until.urlIs('http://localhost:3000/catalogo'), 10000);
+        await driver.wait(until.urlIs(`${CLIENT_URL}/catalogo`), 10000);
 
         console.log('Prueba exitosa: Inicio de sesión como usuario correcto');
 
