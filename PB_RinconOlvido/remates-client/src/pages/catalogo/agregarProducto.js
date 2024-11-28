@@ -99,6 +99,7 @@ const AgregarProductoPopup = ({ onClose }) => {
                         <label>Nombre del Producto:</label>
                         <input
                             type="text"
+                            name="nombre_producto"
                             value={nombreProducto}
                             onChange={(e) => setNombreProducto(e.target.value)}
                             required
@@ -107,6 +108,7 @@ const AgregarProductoPopup = ({ onClose }) => {
                         <label>Precio Base:</label>
                         <input
                             type="number"
+                            name="precio_producto"
                             value={precioBase}
                             onChange={(e) => setPrecioBase(e.target.value)}
                             required
@@ -115,6 +117,7 @@ const AgregarProductoPopup = ({ onClose }) => {
                         <label>Fecha de Término:</label>
                         <input
                             type="date"
+                            name="fecha_producto"
                             value={fechaTermino}
                             onChange={(e) => setFechaTermino(e.target.value)}
                             required
@@ -124,6 +127,7 @@ const AgregarProductoPopup = ({ onClose }) => {
                             <label>URL de Imagen de Portada:</label>
                             <input
                                 type="text"
+                                name="url_producto"
                                 value={imagenPortada}
                                 onChange={(e) => setImagenPortada(e.target.value)}
                                 placeholder="URL de la imagen de portada"
@@ -142,6 +146,7 @@ const AgregarProductoPopup = ({ onClose }) => {
 
                         <label>Descripción:</label>
                             <textarea
+                                name="desc_producto"
                                 value={descripcion}
                                 onChange={(e) => setDescripcion(e.target.value)}
                                 required

@@ -184,7 +184,7 @@ const Catalogo = () => {
                         <Link key={producto.id} to={`/producto/${producto.id}`} className="card-link">
                             <div className="catalogo-card">
                                 <img src={producto.image_url} alt={producto.name} className="catalogo-imagen-producto" />
-                                <div className="catalogo-info">
+                                <div className="catalogo-info" name={producto.name}>
                                     <h3>{producto.name}</h3>
                                     {producto.Bids.length === 0 ? (
                                         <>

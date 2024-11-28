@@ -268,11 +268,12 @@ const ProductoDetalle = () => {
                         <p>Puja actual: ${producto.precio}</p>
                         <input
                             type="number"
+                            name="input_oferta"
                             value={nuevaOferta}
                             onChange={(e) => setNuevaOferta(e.target.value)}
                             placeholder="Ingresa tu oferta"
                         />
-                        <button onClick={handleEnviarOferta}>Enviar Oferta</button>
+                        <button name="enviar_oferta" onClick={handleEnviarOferta}>Enviar Oferta</button>
                         <button onClick={() => setMostrarPopup(false)}>Cerrar</button>
                     </div>
                 </div>

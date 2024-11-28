@@ -1,0 +1,10 @@
+Ejecutar este orden de pruebas:
+
+1. AgregarProducto
+2. EditarProducto
+3. PujarProducto
+4. EliminarProducto
+
+Esto se realiza de esta manera porque se utiliza un producto especifico para probar 2,3 y 4.
+
+Las demas pruebas se pueden ejecutar en cualquier orden
