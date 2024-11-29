@@ -9,7 +9,7 @@ const CLIENT_URL = process.env.CLIENT_URL;
 
 (async function agregarProducto() {
     const options = new chrome.Options();
-    options.addArguments('--headless', '--disable-gpu'); // Ejecutar en modo visible
+    options.addArguments('--headless', '--disable-gpu', '--no-sandbox'); // Ejecutar en modo visible
 
     let driver = await new Builder().forBrowser(Browser.CHROME).setChromeOptions(options).build();
 
